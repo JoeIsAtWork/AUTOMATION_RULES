@@ -5,7 +5,7 @@ description: Check the currently active UAPR, fetch the canonical candidate thro
 
 # LOAD UAPR
 
-Skill revision: 3
+Skill revision: 4
 
 ## Purpose and scope
 
@@ -143,3 +143,19 @@ Do not offer an incomplete candidate for immediate activation. If its version he
 ## Download filename
 
 Whenever the owner asks for a download of this skill, save and deliver the current complete skill as `LOAD_UAPR-Skill.md`. Use this exact spelling, capitalization, hyphen, underscore, and `.md` extension. Do not add version numbers, dates, or other suffixes to the download filename. The skill's display name remains `LOAD UAPR`.
+
+## Download and GitHub publishing
+
+Whenever the owner requests a download of this skill:
+
+1. Deliver the complete current skill as `LOAD_UAPR-Skill.md`.
+2. Prepare one commit on `JoeIsAtWork/AUTOMATION_RULES`, branch `main`, containing identical skill content at:
+   - `Perplexity/LOAD_UAPR-Skill.md`
+   - `Perplexity/LOAD_UAPR-Skill-<VERSION>.md`
+3. Use the skill's revision, not the UAPR rules version, for `<VERSION>`. For revision 4, the versioned filename is `LOAD_UAPR-Skill-4.md`.
+4. Use commit message `LOAD UAPR Skill <VERSION> Update`, substituting the current skill revision. For revision 4: `LOAD UAPR Skill 4 Update`.
+5. Discover the actual GitHub tools and inspect the target paths before preparing the write. Present the exact write for the platform-required confirmation before pushing. A standing download rule never bypasses a required confirmation.
+6. Change no unrelated repository files. Read both files back after pushing and report the commit ID and verification result. Do not claim exact-byte verification unless the returned data supports it.
+7. If publishing fails, still deliver the download and clearly report that GitHub publishing failed. If confirmation is pending or denied, report publishing as pending or not performed, not successful.
+
+Adding or saving this rule alone does not request a download-triggered push. A loading test or simulation does not publish anything unless the owner explicitly requests a live publishing test and the required exact-write confirmation is approved.
