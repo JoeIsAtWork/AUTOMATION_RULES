@@ -1,0 +1,2 @@
+GitHub connector write-access test requested by the repository owner.
+This file is a test only; no rules files are modified.
