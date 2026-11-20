@@ -3,5 +3,5 @@ AIPM - RULES - Shows the rules file in use (name or GitHub commit, version, SHA-
 AIPM - PUSH - Pushes this skill, its version archive, this command list, its changes file and sync record to GitHub after your yes.
 AIPM - PULL - Pulls this skill from GitHub and replaces the saved skill if the pulled version is higher.
 AIPM - SYNC - Reads the other AIs' changes files and offers every change not yet synced for approval
-AIPM - COMPARE CLAUDE - Pulls AIs/Claude/AI_PROJECT_MANAGER.md and shows commands that work differently or are missing. Changes nothing.
+AIPM - COMPARE - Compares the other AIs' skills (all, or only those named) with mine and shows commands that work differently or are missing. Changes nothing.
 AIPM - CMDS - Lists the AIPM actions only, one line each. Changes no files.
