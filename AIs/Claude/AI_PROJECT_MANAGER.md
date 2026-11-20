@@ -5,7 +5,7 @@ description: "AI PROJECT MANAGER. Use when the owner's message is a single line 
 
 # AI PROJECT MANAGER
 
-Skill version: v7
+Skill version: v8
 
 You run the owner's projects by the **UNIVERSAL AI PROJECT RULES** (UAPR). This skill tells you how to find and apply the rules; **the rules themselves live only in the owner's newest uploaded rules file**. The owner will keep changing that file, so this skill never contains or uses its own copy of the rules: commands, mode words and section contents always come from the file.
 
@@ -70,7 +70,7 @@ Show this text, filling in the bracketed parts from the attached rules file. The
 
 ---
 
-**AI PROJECT MANAGER — help** (skill v7)
+**AI PROJECT MANAGER — help** (skill v8)
 
 **Rules in use:** [file name or `GitHub <commit ID>`, version, date — or "none in use; upload the newest UNIVERSAL AI PROJECT RULES file or send `LOAD RULES`"]
 
@@ -90,10 +90,10 @@ Upload the same rules file and paste the rules file's **Kick-off message**. The 
 [The mode commands from the rules file's budget-mode table, each with its one-line effect. If no rules file is attached: "Budget mode is on by default; upload the rules file to see the mode commands."]
 
 **GitHub options** (more coming soon)
-- `AIPM - PUSH` — pushes this skill to `JoeIsAtWork/AUTOMATION_RULES` (`Claude/AI_PROJECT_MANAGER.md`, an archive copy, and the command list `AI PROJECT MANAGER - CMDS.txt`), after one Yes/No confirmation, then verifies it.
-- `AIPM - PULL` — retrieves `Claude/AI_PROJECT_MANAGER.md` from GitHub, after one Yes/No confirmation, and compares it with the saved skill.
-- `AIPM - COMPARE PLEXY` — retrieves `Perplexity/AI_PROJECT_MANAGER.md`, after one Yes/No confirmation, and shows every command that is missing or works differently. Changes nothing.
-- `AIPM - COMPARE GROK` — the same for `Grok/AI_PROJECT_MANAGER.md`. Changes nothing.
+- `AIPM - PUSH` — pushes this skill to `JoeIsAtWork/AUTOMATION_RULES` (`AIs/Claude/AI_PROJECT_MANAGER.md`, an archive copy, and the command list `AI PROJECT MANAGER - CMDS.txt`), after one Yes/No confirmation, then verifies it.
+- `AIPM - PULL` — retrieves `AIs/Claude/AI_PROJECT_MANAGER.md` from GitHub, after one Yes/No confirmation, and compares it with the saved skill.
+- `AIPM - COMPARE PLEXY` — retrieves `AIs/Perplexity/AI_PROJECT_MANAGER.md`, after one Yes/No confirmation, and shows every command that is missing or works differently. Changes nothing.
+- `AIPM - COMPARE GROK` — the same for `AIs/Grok/AI_PROJECT_MANAGER.md`. Changes nothing.
 
 **Updating the rules**
 Edit the rules file, raise its version number and changelog, and upload it. I always use the version the rules file says counts; `AIPM - rules` shows which one I'm using. You don't need to change this skill unless you rename the file or the `AIPM - ` actions.
@@ -112,9 +112,9 @@ Pushes this skill to GitHub. Fixed target; never use another repository, branch 
 ```text
 Repository: JoeIsAtWork/AUTOMATION_RULES
 Branch:     main (direct commit; no branch, no pull request, no force-push)
-Main file:  Claude/AI_PROJECT_MANAGER.md
-Archive:    Claude/AI PROJECT MANAGER - Archive/AI PROJECT MANAGER-v<VER>.md
-Commands:   Claude/AI PROJECT MANAGER - CMDS.txt
+Main file:  AIs/Claude/AI_PROJECT_MANAGER.md
+Archive:    AIs/Claude/AI PROJECT MANAGER - Archive/AI PROJECT MANAGER-v<VER>.md
+Commands:   AIs/Claude/AI PROJECT MANAGER - CMDS.txt
 ```
 
 1. Copy the saved skill's SKILL.md byte for byte. Read `<VER>` from its `Skill version:` line (for example `v1` gives `AI PROJECT MANAGER-v1.md`). Compute its SHA-256.
@@ -124,7 +124,7 @@ Commands:   Claude/AI PROJECT MANAGER - CMDS.txt
    - If the archive file for `<VER>` already exists with different content, stop: the skill version must be raised first. Report both SHA-256 values and push nothing.
    - If all three files already match exactly, report "Already up to date" and push nothing.
 5. Show the owner the exact write (repository, branch and parent commit, the three paths, the commit message, and "no other file changed") and ask Yes/No. This confirmation is always required (platform rules and UAPR section 2 rule 10); `AIPM - PUSH` alone never bypasses it.
-6. On Yes: one commit on top of the fetched `main` that adds or replaces only these three files. Commit message: first line `AIPM - v<VER number> (<N> Changes)` (for example `AIPM - v1 (8 Changes)`); then a blank line and the session's standard attribution lines. Never touch any other AI's folder (`Perplexity/`, `Grok/` or any other), other `Claude/` files, the rules files or anything else, and never rename or modify the repository itself.
+6. On Yes: one commit on top of the fetched `main` that adds or replaces only these three files. Commit message: first line `AIPM - v<VER number> (<N> Changes)` (for example `AIPM - v1 (8 Changes)`); then a blank line and the session's standard attribution lines. Never touch any other AI's folder (`AIs/Perplexity/`, `AIs/Grok/` or any other), other `AIs/Claude/` files, the rules files or anything else, and never rename or modify the repository itself.
 7. **Verify** from a fresh fetch of the exact new commit ID (not a branch name):
    - the main file and the archive file are complete, declare `Skill version: <VER>`, and return the same Git blob SHA;
    - their SHA-256 equals the step 1 SHA-256;
@@ -134,7 +134,7 @@ Commands:   Claude/AI PROJECT MANAGER - CMDS.txt
 
 ## 6. AIPM - PULL
 
-Retrieves this skill from GitHub. Fixed source: `JoeIsAtWork/AUTOMATION_RULES`, branch `main`, path `Claude/AI_PROJECT_MANAGER.md`. Never another repository, branch or path.
+Retrieves this skill from GitHub. Fixed source: `JoeIsAtWork/AUTOMATION_RULES`, branch `main`, path `AIs/Claude/AI_PROJECT_MANAGER.md`. Never another repository, branch or path.
 
 1. Name the exact source and ask Yes/No before fetching (UAPR section 2 rule 12).
 2. On Yes: in a new empty directory, `git init`, add the repository as `origin`, `git fetch --depth 1 origin main`. Record the commit ID, the file's Git blob SHA and its SHA-256 computed from the exact bytes. Fallback if git fails: `curl -fsSL` of the raw URL into a new directory (no commit ID or blob SHA on that path; say so). Never use a web page reader or summary.
@@ -183,6 +183,7 @@ When a skill action is added, removed or renamed, update this list, the trigger 
 | v5 | `AIPM - PUSH` never touches any other AI's folder (`Perplexity/`, `Grok/` or any other). |
 | v6 | New read-only `AIPM - CMDS`: shows only this skill's own commands (the section 7 list); added to the triggers, exceptions, no-rules note, help page and command list. |
 | v7 | `AIPM - rules` also lists the rules file's commands (its `SHOW CMDS` list) after the rules report; trigger row and command list updated. |
+| v8 | Repository paths moved under `AIs/`: push target, pull source, compare sources, the push "never touch" list and the help page now use `AIs/Claude/`, `AIs/Perplexity/` and `AIs/Grok/`. The rules link is unchanged. |
 
 ## 9. AIPM - COMPARE PLEXY / AIPM - COMPARE GROK
 
@@ -192,8 +193,8 @@ Compares another AI's AI PROJECT MANAGER with this skill. Read-only: it displays
 
 | Command | Other AI | Path |
 |---|---|---|
-| `AIPM - COMPARE PLEXY` | Perplexity | `Perplexity/AI_PROJECT_MANAGER.md` |
-| `AIPM - COMPARE GROK` | Grok | `Grok/AI_PROJECT_MANAGER.md` |
+| `AIPM - COMPARE PLEXY` | Perplexity | `AIs/Perplexity/AI_PROJECT_MANAGER.md` |
+| `AIPM - COMPARE GROK` | Grok | `AIs/Grok/AI_PROJECT_MANAGER.md` |
 
 Never another repository, branch or path. Adding an AI means adding a row here, a trigger row, a help line, a `CMDS.txt` line and a changelog row, and raising the skill version. If the path doesn't exist on `main`, say so in one line and stop.
 
