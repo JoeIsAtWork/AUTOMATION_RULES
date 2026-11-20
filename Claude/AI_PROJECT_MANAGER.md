@@ -5,7 +5,7 @@ description: "AI PROJECT MANAGER. Use when the owner's message is a single line 
 
 # AI PROJECT MANAGER
 
-Skill version: v6
+Skill version: v7
 
 You run the owner's projects by the **UNIVERSAL AI PROJECT RULES** (UAPR). This skill tells you how to find and apply the rules; **the rules themselves live only in the owner's newest uploaded rules file**. The owner will keep changing that file, so this skill never contains or uses its own copy of the rules: commands, mode words and section contents always come from the file.
 
@@ -16,7 +16,7 @@ You run the owner's projects by the **UNIVERSAL AI PROJECT RULES** (UAPR). This 
 | `AIPM - help` | The help page (section 4) |
 | `help`, only while a rules file is attached in this chat | The help page (section 4) |
 | `AIPM - CMDS` | Show only this skill's own commands: exactly the section 7 list in a copy block, nothing else; changes nothing |
-| `AIPM - rules` | Report which rules file you are using: name, version, date, SHA-256, and when it was uploaded |
+| `AIPM - rules` | Report which rules file you are using: name, version, date, SHA-256, and when it was uploaded or the GitHub commit it was loaded from; then show exactly the list that rules file's `SHOW CMDS` produces. Changes nothing. With no rules in use, say so (section 2) and list nothing |
 | `AIPM - PUSH` | Push this skill to GitHub (section 5) |
 | `AIPM - PULL` | Retrieve this skill from GitHub and compare it with the saved one (section 6) |
 | `AIPM - COMPARE PLEXY` | Compare Perplexity's AI PROJECT MANAGER with this skill and display what is missing or works differently (section 9) |
@@ -70,7 +70,7 @@ Show this text, filling in the bracketed parts from the attached rules file. The
 
 ---
 
-**AI PROJECT MANAGER — help** (skill v6)
+**AI PROJECT MANAGER — help** (skill v7)
 
 **Rules in use:** [file name or `GitHub <commit ID>`, version, date — or "none in use; upload the newest UNIVERSAL AI PROJECT RULES file or send `LOAD RULES`"]
 
@@ -150,7 +150,7 @@ Retrieves this skill from GitHub. Fixed source: `JoeIsAtWork/AUTOMATION_RULES`, 
 ```text
 AIPM - help - Shows the help page and the command list
 AIPM - CMDS - Shows only the AIPM commands (this list)
-AIPM - rules - Reports which rules file is in use: name, version, date and SHA-256
+AIPM - rules - Reports which rules file is in use (name, version, date, SHA-256) and lists its commands
 AIPM - PUSH - Pushes this skill to GitHub after one Yes/No confirmation, then verifies it
 AIPM - PULL - Retrieves this skill from GitHub and compares it with the saved one
 AIPM - COMPARE PLEXY - Pulls Perplexity's AI PROJECT MANAGER and shows commands that are missing or work differently
@@ -182,6 +182,7 @@ When a skill action is added, removed or renamed, update this list, the trigger 
 | v5 | Section 9 is one compare procedure for every AI, with a fixed sources table; new `AIPM - COMPARE GROK` (`Grok/AI_PROJECT_MANAGER.md`) added to the triggers, exceptions, no-rules note, help page and command list. |
 | v5 | `AIPM - PUSH` never touches any other AI's folder (`Perplexity/`, `Grok/` or any other). |
 | v6 | New read-only `AIPM - CMDS`: shows only this skill's own commands (the section 7 list); added to the triggers, exceptions, no-rules note, help page and command list. |
+| v7 | `AIPM - rules` also lists the rules file's commands (its `SHOW CMDS` list) after the rules report; trigger row and command list updated. |
 
 ## 9. AIPM - COMPARE PLEXY / AIPM - COMPARE GROK
 
