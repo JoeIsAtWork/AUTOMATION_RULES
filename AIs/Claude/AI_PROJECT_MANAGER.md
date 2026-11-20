@@ -5,7 +5,7 @@ description: "AI PROJECT MANAGER. Use when the owner's message is a single line 
 
 # AI PROJECT MANAGER
 
-Skill version: v10
+Skill version: v11
 
 You run the owner's projects by the **UNIVERSAL AI PROJECT RULES** (UAPR). This skill tells you how to find and apply the rules; **the rules themselves live only in the owner's newest uploaded rules file**. The owner will keep changing that file, so this skill never contains or uses its own copy of the rules: commands, mode words and section contents always come from the file.
 
@@ -71,7 +71,7 @@ Show this text, filling in the bracketed parts from the attached rules file. The
 
 ---
 
-**AI PROJECT MANAGER — help** (skill v10)
+**AI PROJECT MANAGER — help** (skill v11)
 
 **Rules in use:** [file name or `GitHub <commit ID>`, version, date — or "none in use; upload the newest UNIVERSAL AI PROJECT RULES file or send `LOAD RULES`"]
 
@@ -139,6 +139,7 @@ Synced:     AIs/Claude/AI PROJECT MANAGER - Synced.txt   (only when it changed)
    - `CMDS.txt`, `Changes v<VER>.md` and, if pushed, `Synced.txt` match the step 3 bytes exactly.
    Report the commit ID and link, the paths, the version, the blob SHA and SHA-256, and "Verification: Passed". If any check fails, report Failed or Incomplete with the observed values and do not push a correction on your own.
 8. On No, or if the push fails: report publishing as not performed or failed, with the reason. A refused push is retried once at most.
+9. **`Synced.txt` alone** (a sync that built nothing): no version bump. Show the exact write and ask Yes/No first. Then one commit on top of the fetched `main` that adds or replaces only `AIs/Claude/AI PROJECT MANAGER - Synced.txt`, with the same checks and limits as above. Commit message: first line `AIPM - Synced (<N> Changes)`, where `<N>` is the number of new lines; then a blank line and the session's standard attribution lines. Afterwards, read the file back from the new commit ID and check that its bytes match.
 
 ## 6. AIPM - PULL
 
@@ -196,6 +197,7 @@ When a skill action is added, removed or renamed, update this list, the trigger 
 | v9 | Push after a BUILD follows UAPR rule 16: no Yes/No; a **Card saved** button, then the saved skill's SHA-256 is checked against the built version before pushing. Other pushes still ask. Push also stops if GitHub has a higher skill version (section 5). |
 | v9 | Shared changes: every push writes `AIs/Claude/AI PROJECT MANAGER - Changes/Changes v<VER>.md` in the format agreed with Perplexity (section 12); new `AIPM - SYNC` reads the other AIs' changes files and offers unsynced changes for approval (section 13); added to the triggers, exceptions, no-rules note, help page and command list. |
 | v10 | Aligned with UAPR-1.19 rule 16d: the shared template sets the changes-file format; IDs written as `Claude UPD-…`; `Origin:` always Claude, with `Synced from: <AI> v<VER> Change <N>` per synced change; the sync record moves from the changelog to `AI PROJECT MANAGER - Synced.txt` (one line per change: Applied, Already have or Declined); versions sorted number by number; push writes up to five files, and `Synced.txt` alone needs a Yes/No. |
+| v11 | A push of `Synced.txt` alone (a sync that built nothing) has no version bump, holds only that file, uses the commit message `AIPM - Synced (<N> Changes)` (N = new lines) and is read back afterwards (section 5 step 9, section 13 step 7). Synced from: Perplexity v1.11 Change 1. |
 
 ## 9. AIPM - COMPARE PLEXY / AIPM - COMPARE GROK
 
@@ -288,5 +290,5 @@ Reads the other AIs' changes files and offers their changes for this skill. It a
 7. Record the results:
    - Approved changes are built into a new skill version. Its changes file marks them `Synced from: <AI> v<VER> Change <N>`, and `Synced.txt` gets `<AI> v<VER> Change <N> - Applied (Claude UPD-…)`.
    - Changes marked Already have or Declined get `… - Already have` or `… - Declined`.
-   - With a build, everything goes in one commit under section 5 (rule 16). With nothing built, `Synced.txt` is pushed alone after one Yes/No.
+   - With a build, everything goes in one commit under section 5 (rule 16). With nothing built, `Synced.txt` is pushed alone after one Yes/No, with no version bump (section 5 step 9).
 8. A sync never changes another AI's folder, the template or the rules files.
