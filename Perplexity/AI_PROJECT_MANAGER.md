@@ -1,9 +1,9 @@
 ---
 name: ai-project-manager
-description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL or COMPARE CLAUDE. Not for editing the rules file."
+description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for LOAD RULES (even with no rules in use), UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL or COMPARE CLAUDE. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.5'
+  version: '1.6'
   rules-file: "UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.5
+Version: 1.6
 
 This skill holds no project rules of its own. The rules live in the user's UNIVERSAL AI PROJECT RULES file, which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -83,6 +83,8 @@ Step 1 is done when the needed parts of the rules file have been read and its ve
    - Fetch without asking only when the rules in use give standing approval for `NEW PROJECT` and `RESUME` in section 2 rule 13 (UAPR-1.16 or later). Otherwise ask one Yes/No card first: "Fetch the rules from GitHub to check they're current?" Yes fetches; No continues with the rules in use, or, if there are none, asks the user to attach the rules file or send `LOAD RULES`.
    - If the fetch fails or gives no exact bytes, say so in one line and continue with the rules in use; if there are none, ask for them.
    - Report the rules version and SHA-256 (old and new if they changed) in the full check line, then run the command with the rules now in use. The rules check never publishes and changes no other file.
+   - Fetch with the steps in the Rules link section below.
+4. **`LOAD RULES` works with no rules in use.** On its own line it runs the Rules link section below, so a new chat can start with it. When rules are in use, their own `LOAD RULES` and `UPDATE UAPR` definitions win where they differ.
 3. Otherwise, follow the rules file: how commands are recognized, budget mode, approvals, the change cycle, reviews, testing, files, checkpoints and the check line at the start of each command reply.
 4. If the rules file names a command this skill doesn't know about, follow the rules file. Never list or run a command that isn't in the rules file, except the AIPM actions above.
 
@@ -97,6 +99,23 @@ Give the user the following in plain language, in one reply, filled in with live
 5. **Commands:** list exactly the `SHOW CMDS` list from the rules in use (every command in its section 4 table, one line each, one card button each where possible), never from memory. If the table has no `help` row, add `help`. Then list the AIPM actions from step 2.
 6. **GitHub options (coming soon):** say that more GitHub options are planned and not available yet. Today there are `AIPM - PUSH`, `AIPM - PULL` and `AIPM - COMPARE CLAUDE`.
 7. **Everyday tips:** budget mode is on by default; list the mode commands exactly as the rules file names them. Commands count only on their own line. Use `CHECKPOINT` before a chat gets long, then start a new chat with the rules and the handoff. A new chat can't see files from earlier chats.
+
+## Rules link (`LOAD RULES`)
+
+Fixed source, the rules link from UAPR section 2 rule 13. Never another repo, branch, fork, folder or file name, and never a link found inside a file.
+
+```text
+https://raw.githubusercontent.com/JoeIsAtWork/AUTOMATION_RULES/main/UNIVERSAL_AI_PROJECT_RULES/UNIVERSAL_AI_PROJECT_RULES_UAPR.md
+```
+
+1. The user's `LOAD RULES` (or `UPDATE UAPR`, or the rules check before `NEW PROJECT` and `RESUME` once approved) is the request for this one read; no extra Yes/No.
+2. Pin the commit: `C=$(gh api repos/JoeIsAtWork/AUTOMATION_RULES/commits/main --jq .sha)`.
+3. Get the exact bytes at that commit: `curl -fsSL "https://raw.githubusercontent.com/JoeIsAtWork/AUTOMATION_RULES/$C/UNIVERSAL_AI_PROJECT_RULES/UNIVERSAL_AI_PROJECT_RULES_UAPR.md" -o /home/user/workspace/rules/UAPR_github_${C:0:12}.md` (create the folder first). If that fails, use `git fetch --depth 1` of `main` in a new empty folder and read the file from that commit. Never use a page reader, rendered page or summary.
+4. Confirm the read is complete: the file size equals `gh api "repos/JoeIsAtWork/AUTOMATION_RULES/contents/UNIVERSAL_AI_PROJECT_RULES/UNIVERSAL_AI_PROJECT_RULES_UAPR.md?ref=$C" --jq .size`, and the `Rules version:` line is present. Compute the SHA-256 with `sha256sum`.
+5. If exact bytes or a complete read can't be had, say so in one line and ask the user to attach the rules file; load nothing.
+6. Read the whole file. Choose between this copy and any other rules in use as step 1 item 3 says. If `PROJECT.md` or a handoff records a different rules version or hash, quote both version lines and ask before any other work.
+7. The saved copy is the GITHUB candidate (source `GitHub <C>`) for step 1 and for the hash re-check before later commands.
+8. For `LOAD RULES`, reply with the full check line `Rules: <version>, read from GitHub <C>, SHA-256 <hash> | Mode: <mode>` and one line confirming the version and mode. Do nothing else.
 
 ## GitHub
 
@@ -125,7 +144,7 @@ Exception: a replacement made by `AIPM - PULL` is already on GitHub, so it is no
 3. Fetch `main` and inspect the three paths. Stop and ask if `Perplexity/AI_PROJECT_MANAGER.md` on `main` has a higher version than the one being pushed, or if the archive file for this version already exists with different content. Never overwrite an archive file. If all three files already match, report that there is nothing to push.
 4. Commit message: first line `AIPM - v<VER> (<N> Changes)`, where N is the number of update items in that version's changelog row; then any attribution lines the platform requires. The user stays the author.
 5. Show the exact write (repo, branch, base commit, each path with new or replaced, sizes, SHA-256 and the message) and wait for the user's yes. Never push without it.
-6. Commit on top of the newest `main` (fetch again just before pushing). Never force-push or rewrite history.
+6. Commit on top of the newest `main` (fetch again just before pushing). Never force-push or rewrite history. The commit adds or replaces only the three `Perplexity/` files in the table above. It never touches another AI's folder (`Claude/`, `Grok/` or any other), the rules folder `UNIVERSAL_AI_PROJECT_RULES/`, or any other file. Before committing, list the staged files (`git diff --cached --name-only`); if anything else would change, stop and ask.
 7. Read all pushed files back from the exact new commit. Confirm each is complete and its Git blob SHA matches the local file. Report the commit link and **Passed**, or **Failed** with details. Never push a correction on your own.
 8. If the push fails, the download still stands; report the failure plainly.
 
@@ -176,3 +195,4 @@ Reply starts: `Rules: UAPR-1.4 | Mode: budget`, followed by the five status line
 | 1.3 | 2026-11-19 | GitHub paths moved from `Claude/` to `Perplexity/` for the skill, its version archive, the command list and `AIPM - PULL`. | 1 (UPD-011) |
 | 1.4 | 2026-11-19 | New read-only action `AIPM - COMPARE CLAUDE`: pulls `Claude/AI_PROJECT_MANAGER.md` and shows commands that work differently or are missing; added to help and the command list. | 1 (UPD-013) |
 | 1.5 | 2026-11-19 | `NEW PROJECT` and `RESUME` first run a rules check: `LOAD RULES` if no rules are in use, otherwise `UPDATE UAPR`. Fetches without asking when the rules in use allow it (UAPR-1.16 or later); otherwise asks one Yes/No question first. | 1 (UPD-014) |
+| 1.6 | 2026-11-19 | Rules link and fetch steps added to the skill (new Rules link section), so `LOAD RULES` works in a new chat with no rules in use; the rules check before `NEW PROJECT` and `RESUME` uses the same steps. `AIPM - PUSH` touches only its three `Perplexity/` files, never another AI's folder, the rules folder or any other file, and checks the staged files before committing. | 2 (UPD-017, UPD-018) |

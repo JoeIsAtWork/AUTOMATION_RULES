@@ -3,7 +3,7 @@ AIPM - RULES - Shows the rules file in use (name or GitHub commit, version, SHA-
 AIPM - PUSH - Pushes this skill, its version archive and this command list to GitHub after your yes.
 AIPM - PULL - Pulls this skill from GitHub and replaces the saved skill if the pulled version is higher.
 AIPM - COMPARE CLAUDE - Pulls Claude/AI_PROJECT_MANAGER.md and shows commands that work differently or are missing. Changes nothing.
-NEW PROJECT - Asks the Project Brief (section 5) in one message and creates PROJECT.md
+NEW PROJECT - Checks the rules against GitHub first (section 2 rule 13g), then asks the Project Brief (section 5) in one message and creates PROJECT.md
 PLAN - A plan of 8 lines or fewer, acceptance checks, at most 3 questions, numbered update items
 UPDATE-LIST: <items> - Adds or changes update-list items only
 APPROVE <IDs> - Marks exactly those update items Approved (section 6)
@@ -26,12 +26,12 @@ PACKAGE RELEASE <version> - Verifies and packages that version for download
 STATUS - Five lines: version, mode, test level, open items, next action
 ANYTHING MISSED - A full sweep of what isn't finished, from PROJECT.md, the last handoff and the current files: open requests; update items not yet Verified; open problems, review findings and owner questions; claims still marked [M] or [A]; open fix-the-rules items; and whether the current files still match the hashes in the last handoff and checkpoint .zip (a stale checkpoint is reported). Each item gets one line with its ID. Ends with the one recommended next action in a copy box, or "Nothing missed"
 SAVE - Updates PROJECT.md and the changelog
-SAVE UAPR - Adopts the attached rules version: checks its version line and SHA-256 against the version drafted in this chat, does what SAVE does (when a project is open, recording the adoption), then publishes it to GitHub (section 2 rule 14)
+SAVE UAPR - Adopts the attached rules version: checks its version line and SHA-256 against the version drafted in this chat, or against an upload the upload check found missing from GitHub (section 2 rule 14h), does what SAVE does (when a project is open, recording the adoption), then publishes it to GitHub (section 2 rule 14)
 LOAD RULES - Loads the rules from the rules link (section 2 rule 13)
 UPDATE UAPR - Pulls the rules file from the rules link and, if it's a higher version, loads it as the current rules; reports the old and new version and SHA-256 (section 2 rule 13f)
-PUBLISH RULES - Publishes the newest attached rules file to GitHub (section 2 rule 14); used to retry a failed publish or to publish a version not drafted in this chat
+PUBLISH RULES - Publishes the newest attached rules file to GitHub (section 2 rule 14); used to retry a failed publish or to publish a version not drafted in this chat and not found missing by the upload check
 CHECKPOINT - Updates PROJECT.md, writes the handoff file and packs the checkpoint .zip (section 10)
-RESUME - Always in full mode, for this task only (section 3). Unpacks an attached checkpoint .zip (if any), reads the handoff and PROJECT.md, checks file versions and hashes, reads the files in full and re-runs the checks in section 10, continues
+RESUME - Checks the rules against GitHub first (section 2 rule 13g). Always in full mode, for this task only (section 3). Unpacks an attached checkpoint .zip (if any), reads the handoff and PROJECT.md, checks file versions and hashes, reads the files in full and re-runs the checks in section 10, continues
 FREEZE / UNFREEZE - No file changes until UNFREEZE
 UNDO - Restores the previous delivered version from the backup copy
 FULL / FULL ON / BUDGET ON / COST? - Mode controls (section 3)
