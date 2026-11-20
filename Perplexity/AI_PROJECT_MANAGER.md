@@ -3,7 +3,7 @@ name: ai-project-manager
 description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL or COMPARE CLAUDE. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.4'
+  version: '1.5'
   rules-file: "UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.4
+Version: 1.5
 
 This skill holds no project rules of its own. The rules live in the user's UNIVERSAL AI PROJECT RULES file, which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -78,6 +78,11 @@ Step 1 is done when the needed parts of the rules file have been read and its ve
    | `AIPM - COMPARE CLAUDE` | — | Pulls Claude's copy of this skill and shows commands that work differently or are missing. Changes nothing. |
 
 2. UAPR commands are never prefixed. `AIPM - <UAPR command>` (for example `AIPM - NEW PROJECT`) is not a command; ask whether the user meant the plain UAPR command.
+3. **Rules check before `NEW PROJECT` and `RESUME`.** Before anything else these two commands do, make sure the newest rules are loaded:
+   - If no rules are in use in this chat yet, do what `LOAD RULES` does. If rules are in use, do what `UPDATE UAPR` does (a higher version on GitHub becomes the rules in use). Follow the rules file's rules-link steps (section 2 rule 13): exact bytes only, read in full, SHA-256 computed.
+   - Fetch without asking only when the rules in use give standing approval for `NEW PROJECT` and `RESUME` in section 2 rule 13 (UAPR-1.16 or later). Otherwise ask one Yes/No card first: "Fetch the rules from GitHub to check they're current?" Yes fetches; No continues with the rules in use, or, if there are none, asks the user to attach the rules file or send `LOAD RULES`.
+   - If the fetch fails or gives no exact bytes, say so in one line and continue with the rules in use; if there are none, ask for them.
+   - Report the rules version and SHA-256 (old and new if they changed) in the full check line, then run the command with the rules now in use. The rules check never publishes and changes no other file.
 3. Otherwise, follow the rules file: how commands are recognized, budget mode, approvals, the change cycle, reviews, testing, files, checkpoints and the check line at the start of each command reply.
 4. If the rules file names a command this skill doesn't know about, follow the rules file. Never list or run a command that isn't in the rules file, except the AIPM actions above.
 
@@ -170,3 +175,4 @@ Reply starts: `Rules: UAPR-1.4 | Mode: budget`, followed by the five status line
 | 1.2 | 2026-11-19 | `AIPM -` actions (old `APM -` forms kept); GitHub options placeholder in help; `AIPM - PUSH` (skill, archive, CMDS.txt, read-back check); push message `AIPM - v<VER> (<N> Changes)`; CMDS.txt format; `AIPM - PULL` with automatic replace on a higher version; download and push after every save or update; version line and changelog; single-file skill (help and finder inlined); step 1 accepts rules loaded from GitHub. | 10 (UPD-001 to UPD-010) |
 | 1.3 | 2026-11-19 | GitHub paths moved from `Claude/` to `Perplexity/` for the skill, its version archive, the command list and `AIPM - PULL`. | 1 (UPD-011) |
 | 1.4 | 2026-11-19 | New read-only action `AIPM - COMPARE CLAUDE`: pulls `Claude/AI_PROJECT_MANAGER.md` and shows commands that work differently or are missing; added to help and the command list. | 1 (UPD-013) |
+| 1.5 | 2026-11-19 | `NEW PROJECT` and `RESUME` first run a rules check: `LOAD RULES` if no rules are in use, otherwise `UPDATE UAPR`. Fetches without asking when the rules in use allow it (UAPR-1.16 or later); otherwise asks one Yes/No question first. | 1 (UPD-014) |
