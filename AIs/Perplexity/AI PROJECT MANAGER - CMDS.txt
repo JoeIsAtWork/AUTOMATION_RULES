@@ -1,7 +1,8 @@
 AIPM - HELP - Shows help: rules in use, how to start, all commands and tips. Changes no files.
 AIPM - RULES - Shows the rules file in use (name or GitHub commit, version, SHA-256), other copies found, and the UAPR commands list. Changes no files.
-AIPM - PUSH - Pushes this skill, its version archive and this command list to GitHub after your yes.
+AIPM - PUSH - Pushes this skill, its version archive, this command list, its changes file and sync record to GitHub after your yes.
 AIPM - PULL - Pulls this skill from GitHub and replaces the saved skill if the pulled version is higher.
+AIPM - SYNC - Reads the other AIs' changes files and offers every change not yet synced for approval
 AIPM - COMPARE CLAUDE - Pulls AIs/Claude/AI_PROJECT_MANAGER.md and shows commands that work differently or are missing. Changes nothing.
 AIPM - CMDS - Lists the AIPM actions only, one line each. Changes no files.
 NEW PROJECT - Checks the rules against GitHub first (section 2 rule 13g), then asks the Project Brief (section 5) in one message and creates PROJECT.md
