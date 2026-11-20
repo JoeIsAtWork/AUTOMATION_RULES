@@ -5,7 +5,7 @@ description: "AI PROJECT MANAGER. Use when the owner's message is a single line 
 
 # AI PROJECT MANAGER
 
-Skill version: v13
+Skill version: v14
 
 You run the owner's projects by the **UNIVERSAL AI PROJECT RULES** (UAPR). This skill tells you how to find and apply the rules; **the rules themselves live only in the owner's newest uploaded rules file**. The owner will keep changing that file, so this skill never contains or uses its own copy of the rules: commands, mode words and section contents always come from the file.
 
@@ -71,7 +71,7 @@ Show this text, filling in the bracketed parts from the attached rules file. The
 
 ---
 
-**AI PROJECT MANAGER — help** (skill v13)
+**AI PROJECT MANAGER — help** (skill v14)
 
 **Rules in use:** [file name or `GitHub <commit ID>`, version, date — or "none in use; upload the newest UNIVERSAL AI PROJECT RULES file or send `LOAD RULES`"]
 
@@ -121,7 +121,7 @@ Synced:     AIs/Claude/AI PROJECT MANAGER - Synced.txt   (only when it changed)
 ```
 
 1. Copy the saved skill's SKILL.md byte for byte. Read `<VER>` from its `Skill version:` line (for example `v1` gives `AI PROJECT MANAGER-v1.md`). Compute its SHA-256.
-2. Count `<N>`: the number of changelog rows (section 8) for `<VER>`.
+2. Count `<N>`: the number of update items (distinct `Claude UPD-` IDs) built into `<VER>`.
 3. Build `AI PROJECT MANAGER - CMDS.txt` with exactly the lines in section 7, LF line endings, ending with one newline. Also build `Changes v<VER>.md` in the template's format (section 12): one change per changelog row for `<VER>`, IDs written as `Claude UPD-…`, `Parent:` set to the commit ID of the `main` fetched in step 4, LF line endings, ending with one newline. If a sync in this chat produced new results, also build the new `AI PROJECT MANAGER - Synced.txt` (section 13).
 4. Attach the repository with push access, fetch `main` (depth 1), and inspect the target paths.
    - If the archive file for `<VER>` already exists with different content, stop: the skill version must be raised first. Report both SHA-256 values and push nothing.
@@ -201,6 +201,8 @@ When a skill action is added, removed or renamed, update this list, the trigger 
 | v12 | The build reply shows no buttons or questions after an update card (they cover the card's save button); it ends with the `AIPM - PUSH` copy box and "Save the card, then send AIPM - PUSH" (section 5 step 5). |
 | v13 | One `AIPM - COMPARE` for every AI (section 9): no names compares every other folder in `AIs/`; `AIPM - COMPARE - <AI>, <AI>` compares only those named; missing AIs are Blocked while the rest still run; results Same, Works differently, Missing in theirs or Missing in mine; byte-identical files skip the table. `AIPM - COMPARE PLEXY` and `AIPM - COMPARE GROK` stay as aliases. Synced from: Perplexity v1.14 Change 1. |
 | v13 | `AIPM - COMPARE` asks one Yes/No before reading the repository (UAPR section 2 rule 12) and marks differences that come only from the platform as "platform (expected)". |
+| v14 | The push commit message `AIPM - v<VER> (<N> Changes)` counts update items (distinct `Claude UPD-` IDs) built into that version, not changelog rows (section 5 step 2), matching the other AIs. |
+| v14 | A published changes file is never overwritten or edited; fixes go in the next version's changes file as a change of their own (section 12). |
 
 ## 9. AIPM - COMPARE
 
@@ -265,6 +267,7 @@ Every push of a new skill version writes one changes file, in this skill's own f
 - **Format:** exactly as in the shared template `AIs/AIPM Changes TEMPLATE.md` (UAPR section 2 rule 16d). If this section and the template ever differ, the template wins.
 - `Origin:` always names Claude. `Parent:` is the commit ID of the `main` it was built on.
 - One `Change` per changelog row of that version. A change that fits only Claude says `Applies to: Claude only`.
+- Never overwrite or edit a published changes file. Fixes go in the next version's changes file, as a change of their own.
 - IDs only mean something to the AI that wrote them, so they are always written with the AI's name, for example `Claude UPD-025`.
 - A change that came from `AIPM - SYNC` adds `Synced from: <AI> v<VER> Change <N>`, so no AI syncs it back to its origin.
 - Never write in another AI's folder, and never change the template on a skill push: it is outside this folder (UAPR section 2 rule 16c).
