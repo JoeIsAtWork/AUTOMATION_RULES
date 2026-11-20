@@ -3,7 +3,7 @@ name: ai-project-manager
 description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for LOAD RULES (even with no rules in use), UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL, SYNC, COMPARE CLAUDE or CMDS. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.10'
+  version: '1.11'
   rules-file: "UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.10
+Version: 1.11
 
 This skill holds no project rules of its own. The rules live in the user's UNIVERSAL AI PROJECT RULES file, which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -145,7 +145,7 @@ Exception: a replacement made by `AIPM - PULL` is already on GitHub, so it is no
 
 ### Changes file and sync record
 
-Formats follow UAPR section 2 rule 16d and `AIs/AIPM Changes TEMPLATE.md` (read it from `main` at push time; if it is missing, use the format below).
+Formats follow UAPR section 2 rule 16d and `AIs/AIPM Changes TEMPLATE.md` (read it from `main` at push time). If this skill and the template differ, the template wins; if the template is missing, use the format below.
 
 - **Changes file** `Changes v<VER>.md`, `<VER>` as written in `metadata.version`, no padding. One `Change <N>` per update item in that version's changelog row, in order. Holds only that version's changes. Written as plain text, LF line ends:
 
@@ -156,8 +156,8 @@ Formats follow UAPR section 2 rule 16d and `AIs/AIPM Changes TEMPLATE.md` (read 
   Change 1: <section> — <what and why, in plain words>
             Applies to: all AIs | Perplexity only
             IDs: Perplexity UPD-<…>
-            Commands: <affected commands>
             Synced from: <AI> v<VER> Change <N>      (only if it came from another AI's changes file)
+            Commands: <affected commands>
             New text: <exact text from this skill, for reference>
             Platform parts: <what other AIs adapt>
   ```
@@ -198,7 +198,7 @@ Reads other AIs' changes and offers them for approval. Applies nothing by itself
 4. Skip, without a sync record line: any change whose `Origin` or `Synced from` names Perplexity, and any change marked `Applies to: <another AI> only`. Skip changes with a line in the sync record (`Applied`, `Already have` or `Declined`); offer undecided ones (no line) again.
 5. For each remaining change, check this skill: if it already does the same, propose recording `Already have`. Otherwise restate it as a new update item (`UPD-<next>`) under "## NEXT CHANGES FOR APPROVAL", adapted to this skill and Perplexity Computer, naming its source (`<AI> v<VER> Change <N>`) and anything left out as platform-only. If nothing remains, say "Nothing to sync".
 6. Wait. The user approves with `APPROVE` and `BUILD` (or names the IDs), or declines items. Unanswered items get no line and are offered again next time.
-7. On `BUILD`, apply the approved items into a new skill version, add the sync record lines (`Applied (Perplexity <ID>)`, `Already have` or `Declined`), give each synced change in this version's changes file a `Synced from:` line, and push as usual. Recording only `Already have` or `Declined` lines with no skill change still needs a version bump and push, after the user's yes unless the rules in use cover it.
+7. On `BUILD`, apply the approved items into a new skill version, add the sync record lines (`Applied (Perplexity <ID>)`, `Already have` or `Declined`), give each synced change in this version's changes file a `Synced from:` line, and push as usual. If nothing is built (only `Already have` or `Declined` lines), push `AI PROJECT MANAGER - Synced.txt` on its own, with no version bump, after one Yes/No: same checks as `AIPM - PUSH` (staged files must be only that file), commit message `AIPM - Synced (<N> Changes)` where N is the number of new lines, then read it back.
 8. Never change another AI's folder, the template or the rules files.
 
 ### `AIPM - COMPARE CLAUDE`
@@ -242,3 +242,4 @@ Reply starts: `Rules: UAPR-1.4 | Mode: budget`, followed by the five status line
 | 1.8 | 2026-11-20 | After `APPROVE` and `BUILD` change this skill, `AIPM - PUSH` runs automatically and pushes without asking when the rules in use allow it (UAPR section 2 rule 16, UAPR-1.18 or later); otherwise it waits for a yes. All push checks still run. | 1 (UPD-024) |
 | 1.9 | 2026-11-20 | Repo paths moved to the new `AIs/` folder structure: the skill, its version archive and the command list are in `AIs/Perplexity/`; `AIPM - COMPARE CLAUDE` reads `AIs/Claude/AI_PROJECT_MANAGER.md`; the push never touches any other folder in `AIs/`. | 1 (UPD-025) |
 | 1.10 | 2026-11-20 | Every push also writes this version's changes file `AIs/Perplexity/AI PROJECT MANAGER - Changes/Changes v<VER>.md` (agreed template, one Change per item, IDs as `Perplexity UPD-…`, `Synced from:` per change) and the sync record `AI PROJECT MANAGER - Synced.txt`; push now covers five files and never touches shared files outside `AIs/Perplexity/`. New action `AIPM - SYNC` reads the other AIs' changes files and offers every change not yet synced for approval; added to help and the command list. | 2 (UPD-022, UPD-023) |
+| 1.11 | 2026-11-20 | Synced from Claude v10 Change 1: the changes template wins over this skill's built-in format; `Synced from:` now comes right after `IDs:`; a sync that builds nothing pushes `Synced.txt` on its own after one Yes/No (message `AIPM - Synced (<N> Changes)`), with no version bump. | 1 (UPD-027) |
