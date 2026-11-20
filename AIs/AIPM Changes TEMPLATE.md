@@ -16,6 +16,15 @@ How to use:
 - Results of reading other AIs' changes go in
   AIs/<AI>/AI PROJECT MANAGER - Synced.txt (UAPR section 2 rule 16d).
 - A synced change keeps "Synced from:" so it is never synced back to its origin.
+- One change = one origin. A change marked "Synced from:" holds only what came
+  from that source; anything the writing AI adds goes in a separate change
+  without "Synced from:", so the other AIs can sync it.
+- Shared behavior is never a platform part. Anything every AI should do the same
+  way (file names, commit messages, version-bump rules, record formats) is written
+  out in full; "Platform parts" only lists what really differs (folders, tools,
+  buttons).
+- Exact text, not descriptions. "New text:" gives the literal words (for example
+  the exact commit message), never "the AI's choice".
 - Delete this comment block and replace every <…> before saving.
 -->
 
