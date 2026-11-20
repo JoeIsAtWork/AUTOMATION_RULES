@@ -5,37 +5,3 @@ AIPM - PULL - Pulls this skill from GitHub and replaces the saved skill if the p
 AIPM - SYNC - Reads the other AIs' changes files and offers every change not yet synced for approval
 AIPM - COMPARE CLAUDE - Pulls AIs/Claude/AI_PROJECT_MANAGER.md and shows commands that work differently or are missing. Changes nothing.
 AIPM - CMDS - Lists the AIPM actions only, one line each. Changes no files.
-NEW PROJECT - Checks the rules against GitHub first (section 2 rule 13g), then asks the Project Brief (section 5) in one message and creates PROJECT.md
-PLAN - A plan of 8 lines or fewer, acceptance checks, at most 3 questions, numbered update items
-UPDATE-LIST: <items> - Adds or changes update-list items only
-APPROVE <IDs> - Marks exactly those update items Approved (section 6)
-EDITS: <plain description> - Restates the described changes as numbered update items with IDs, files and the exact changes, then waits. Applies them as one batch only after yes. APPROVE <IDs> only marks them Approved; BUILD then applies them. If APPROVE names only some of the restated IDs, the others stay Proposed
-DISPLAY EDITS - Shows the approved edits in the section 6 layout
-BUILD (or BUILD BATCH <letter>) - Applies the update items marked Approved, then marks them Applied
-CHECK UPDATED CODE - Diffs the owner's upload against the last approved copy and reports each edit
-REVIEW CODE - <scope> - A formal review of the named scope (section 8)
-DEEP REVIEW - <scope> - A formal review of the named scope at full-mode depth (full-file reads, broader checks), for that one review only
-CHECK REVIEWS <IDs> - Rechecks another review's findings against the current code and proposes dispositions
-UPDATE FROM REVIEWS <IDs> - Approves and applies exactly those findings in a new version. Each one is logged on the update list as a UPD- item that names its F- ID
-VERIFY FIXES <IDs> - Rechecks exact changes for those findings and their regressions
-CHECK SECURITY - Audit in five areas: tamper-proof, secure, safe, no interpreting or guessing, followed exactly by every AI. Each problem gets lines, exact words, risk (High, Medium, Low) and a one-line fix
-TEST - Runs what can be run; gives the owner a checklist for the rest
-START SIM / END SIM - Practice run with made-up SIM_ files, numbered test sets and a coverage table. START SIM during a sim ends it first. END SIM adds gaps to the fix-the-rules list
-RUN DEMO - Sample DEMO_ output so the owner can see layouts
-MOCKUP <thing> - A labeled text sketch (a rough picture in full mode)
-SHOW - Renders the current mockup and delivers the current files
-PACKAGE RELEASE <version> - Verifies and packages that version for download
-STATUS - Five lines: version, mode, test level, open items, next action
-ANYTHING MISSED - A full sweep of what isn't finished, from PROJECT.md, the last handoff and the current files: open requests; update items not yet Verified; open problems, review findings and owner questions; claims still marked [M] or [A]; open fix-the-rules items; and whether the current files still match the hashes in the last handoff and checkpoint .zip (a stale checkpoint is reported). Each item gets one line with its ID. Ends with the one recommended next action in a copy box, or "Nothing missed"
-SAVE - Updates PROJECT.md and the changelog
-SAVE UAPR - Adopts the attached rules version: checks its version line and SHA-256 against the version drafted in this chat, or against an upload the upload check found missing from GitHub (section 2 rule 14h), does what SAVE does (when a project is open, recording the adoption), then publishes it to GitHub (section 2 rule 14)
-LOAD RULES - Loads the rules from the rules link (section 2 rule 13)
-UPDATE UAPR - Pulls the rules file from the rules link and, if it's a higher version, loads it as the current rules; reports the old and new version and SHA-256 (section 2 rule 13f)
-PUBLISH RULES - Publishes the newest attached rules file to GitHub (section 2 rule 14); used to retry a failed publish or to publish a version not drafted in this chat and not found missing by the upload check
-CHECKPOINT - Updates PROJECT.md, writes the handoff file and packs the checkpoint .zip (section 10)
-RESUME - Checks the rules against GitHub first (section 2 rule 13g). Always in full mode, for this task only (section 3). Unpacks an attached checkpoint .zip (if any), reads the handoff and PROJECT.md, checks file versions and hashes, reads the files in full and re-runs the checks in section 10, continues
-FREEZE / UNFREEZE - No file changes until UNFREEZE
-UNDO - Restores the previous delivered version from the backup copy
-FULL / FULL ON / BUDGET ON / COST? - Mode controls (section 3)
-SHOW CMDS - Lists every command once with a one-line description, one button each where possible
-help (or APM - help, AI PROJECT MANAGER help, AI PROJECT MANAGER - help) - A short introduction, then the SHOW CMDS list (section 4 rule 13). Plain help counts only when a rules file is attached

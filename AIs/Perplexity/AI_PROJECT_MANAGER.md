@@ -3,7 +3,7 @@ name: ai-project-manager
 description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for LOAD RULES (even with no rules in use), UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL, SYNC, COMPARE CLAUDE or CMDS. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.11'
+  version: '1.12'
   rules-file: "UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.11
+Version: 1.12
 
 This skill holds no project rules of its own. The rules live in the user's UNIVERSAL AI PROJECT RULES file, which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -76,7 +76,7 @@ Step 1 is done when the needed parts of the rules file have been read and its ve
    | `AIPM - PUSH` | — | Pushes this skill, its archive, command list, changes file and sync record to GitHub (see GitHub section), after the user's yes. |
    | `AIPM - PULL` | — | Pulls this skill from GitHub and replaces the saved skill if the pulled version is higher. |
    | `AIPM - SYNC` | — | Reads the other AIs' changes files and offers every change not yet synced as update items for the user's approval. Applies nothing by itself. |
-| `AIPM - COMPARE CLAUDE` | — | Pulls Claude's copy of this skill and shows commands that work differently or are missing. Changes nothing. |
+   | `AIPM - COMPARE CLAUDE` | — | Pulls Claude's copy of this skill and shows commands that work differently or are missing. Changes nothing. |
    | `AIPM - CMDS` | — | Lists the AIPM actions only (every row of this table), one line each with a one-line description. Changes no files. |
 
 2. UAPR commands are never prefixed. `AIPM - <UAPR command>` (for example `AIPM - NEW PROJECT`) is not a command; ask whether the user meant the plain UAPR command.
@@ -127,7 +127,7 @@ Repo `JoeIsAtWork/AUTOMATION_RULES`, branch `main`. `<VER>` is this skill's `met
 |---|---|
 | Skill | `AIs/Perplexity/AI_PROJECT_MANAGER.md` |
 | Version archive | `AIs/Perplexity/AI PROJECT MANAGER - Archive/AI PROJECT MANAGER-v<VER>.md` |
-| Command list (no archive) | `AIs/Perplexity/AI PROJECT MANAGER - CMDS.txt` |
+| Command list, AIPM actions only (no archive) | `AIs/Perplexity/AI PROJECT MANAGER - CMDS.txt` |
 | Changes file (one per pushed version, never overwritten) | `AIs/Perplexity/AI PROJECT MANAGER - Changes/Changes v<VER>.md` |
 | Sync record | `AIs/Perplexity/AI PROJECT MANAGER - Synced.txt` |
 | Changes template (read only) | `AIs/AIPM Changes TEMPLATE.md` |
@@ -168,7 +168,7 @@ Formats follow UAPR section 2 rule 16d and `AIs/AIPM Changes TEMPLATE.md` (read 
 ### `AIPM - PUSH`
 
 1. Read the complete saved skill and its `metadata.version`.
-2. Build `AI PROJECT MANAGER - CMDS.txt`: one line per command in the form `CMD_NAME - Description`, the AIPM actions first, then every command in the section 4 table of the rules in use (from the file read in this chat, never from memory). Nothing else: no title, blank lines or notes. If no rules are in use, report **Blocked** and ask for them.
+2. Build `AI PROJECT MANAGER - CMDS.txt`: one line per AIPM action (every row of the Step 2 action table, in table order) in the form `CMD_NAME - Description`. Nothing else: no UAPR commands, title, blank lines or notes. It does not need rules in use.
    Then build the changes file for this version from its changelog row, and the sync record if `AIPM - SYNC` decisions changed it (see Changes file and sync record).
 3. Fetch `main` and inspect the five paths. Stop and ask if `AIs/Perplexity/AI_PROJECT_MANAGER.md` on `main` has a higher version than the one being pushed, or if the archive file or changes file for this version already exists with different content. Never overwrite an archive or changes file. If all files already match, report that there is nothing to push.
 4. Commit message: first line `AIPM - v<VER> (<N> Changes)`, where N is the number of update items in that version's changelog row; then any attribution lines the platform requires. The user stays the author.
@@ -243,3 +243,4 @@ Reply starts: `Rules: UAPR-1.4 | Mode: budget`, followed by the five status line
 | 1.9 | 2026-11-20 | Repo paths moved to the new `AIs/` folder structure: the skill, its version archive and the command list are in `AIs/Perplexity/`; `AIPM - COMPARE CLAUDE` reads `AIs/Claude/AI_PROJECT_MANAGER.md`; the push never touches any other folder in `AIs/`. | 1 (UPD-025) |
 | 1.10 | 2026-11-20 | Every push also writes this version's changes file `AIs/Perplexity/AI PROJECT MANAGER - Changes/Changes v<VER>.md` (agreed template, one Change per item, IDs as `Perplexity UPD-…`, `Synced from:` per change) and the sync record `AI PROJECT MANAGER - Synced.txt`; push now covers five files and never touches shared files outside `AIs/Perplexity/`. New action `AIPM - SYNC` reads the other AIs' changes files and offers every change not yet synced for approval; added to help and the command list. | 2 (UPD-022, UPD-023) |
 | 1.11 | 2026-11-20 | Synced from Claude v10 Change 1: the changes template wins over this skill's built-in format; `Synced from:` now comes right after `IDs:`; a sync that builds nothing pushes `Synced.txt` on its own after one Yes/No (message `AIPM - Synced (<N> Changes)`), with no version bump. | 1 (UPD-027) |
+| 1.12 | 2026-11-20 | `AI PROJECT MANAGER - CMDS.txt` now lists only the AIPM actions (no UAPR commands), in action-table order, and no longer needs rules in use. Also restored the indent of the `AIPM - COMPARE CLAUDE` row in the action table (lost in 1.10). | 1 (UPD-028) |
