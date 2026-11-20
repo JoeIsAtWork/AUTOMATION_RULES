@@ -2,4 +2,5 @@ AIPM - help - Shows the help page and the command list
 AIPM - rules - Reports which rules file is in use: name, version, date and SHA-256
 AIPM - PUSH - Pushes this skill to GitHub after one Yes/No confirmation, then verifies it
 AIPM - PULL - Retrieves this skill from GitHub and compares it with the saved one
+AIPM - COMPARE PLEXY - Pulls Perplexity's AI PROJECT MANAGER and shows commands that are missing or work differently
 AIPM - <rules command> - Runs any command from the rules file's command table
