@@ -3,7 +3,7 @@ name: ai-project-manager
 description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for LOAD RULES (even with no rules in use), UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL, COMPARE CLAUDE or CMDS. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.7'
+  version: '1.8'
   rules-file: "UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.7
+Version: 1.8
 
 This skill holds no project rules of its own. The rules live in the user's UNIVERSAL AI PROJECT RULES file, which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -134,7 +134,7 @@ The download of this skill is always named `AI_PROJECT_MANAGER.md`, holds the co
 ### After every save or update of this skill
 
 1. Deliver the complete saved skill as the download `AI_PROJECT_MANAGER.md`.
-2. Run `AIPM - PUSH` up to its confirmation step.
+2. Run `AIPM - PUSH`. If the change came from the user's `APPROVE` and `BUILD` (or a request naming the IDs) and the rules in use give standing approval for it (UAPR section 2 rule 16, UAPR-1.18 or later), push without asking: that approval counts as the yes in step 5. All other checks still run, and any check that stops the push gets a question. Report the exact write, the commit link and the read-back result. Otherwise run `AIPM - PUSH` up to its confirmation step and wait.
 
 Exception: a replacement made by `AIPM - PULL` is already on GitHub, so it is not pushed back.
 
@@ -144,7 +144,7 @@ Exception: a replacement made by `AIPM - PULL` is already on GitHub, so it is no
 2. Build `AI PROJECT MANAGER - CMDS.txt`: one line per command in the form `CMD_NAME - Description`, the AIPM actions first, then every command in the section 4 table of the rules in use (from the file read in this chat, never from memory). Nothing else: no title, blank lines or notes. If no rules are in use, report **Blocked** and ask for them.
 3. Fetch `main` and inspect the three paths. Stop and ask if `Perplexity/AI_PROJECT_MANAGER.md` on `main` has a higher version than the one being pushed, or if the archive file for this version already exists with different content. Never overwrite an archive file. If all three files already match, report that there is nothing to push.
 4. Commit message: first line `AIPM - v<VER> (<N> Changes)`, where N is the number of update items in that version's changelog row; then any attribution lines the platform requires. The user stays the author.
-5. Show the exact write (repo, branch, base commit, each path with new or replaced, sizes, SHA-256 and the message) and wait for the user's yes. Never push without it.
+5. Show the exact write (repo, branch, base commit, each path with new or replaced, sizes, SHA-256 and the message) and wait for the user's yes. Never push without it, except under the standing approval in "After every save or update of this skill" step 2.
 6. Commit on top of the newest `main` (fetch again just before pushing). Never force-push or rewrite history. The commit adds or replaces only the three `Perplexity/` files in the table above. It never touches another AI's folder (`Claude/`, `Grok/` or any other), the rules folder `UNIVERSAL_AI_PROJECT_RULES/`, or any other file. Before committing, list the staged files (`git diff --cached --name-only`); if anything else would change, stop and ask.
 7. Read all pushed files back from the exact new commit. Confirm each is complete and its Git blob SHA matches the local file. Report the commit link and **Passed**, or **Failed** with details. Never push a correction on your own.
 8. If the push fails, the download still stands; report the failure plainly.
@@ -198,3 +198,4 @@ Reply starts: `Rules: UAPR-1.4 | Mode: budget`, followed by the five status line
 | 1.5 | 2026-11-19 | `NEW PROJECT` and `RESUME` first run a rules check: `LOAD RULES` if no rules are in use, otherwise `UPDATE UAPR`. Fetches without asking when the rules in use allow it (UAPR-1.16 or later); otherwise asks one Yes/No question first. | 1 (UPD-014) |
 | 1.6 | 2026-11-19 | Rules link and fetch steps added to the skill (new Rules link section), so `LOAD RULES` works in a new chat with no rules in use; the rules check before `NEW PROJECT` and `RESUME` uses the same steps. `AIPM - PUSH` touches only its three `Perplexity/` files, never another AI's folder, the rules folder or any other file, and checks the staged files before committing. | 2 (UPD-017, UPD-018) |
 | 1.7 | 2026-11-20 | New action `AIPM - CMDS` lists the AIPM actions only; added to help and the command list. `AIPM - RULES` now also lists the UAPR commands (the `SHOW CMDS` list from the rules in use). | 2 (UPD-020, UPD-021) |
+| 1.8 | 2026-11-20 | After `APPROVE` and `BUILD` change this skill, `AIPM - PUSH` runs automatically and pushes without asking when the rules in use allow it (UAPR section 2 rule 16, UAPR-1.18 or later); otherwise it waits for a yes. All push checks still run. | 1 (UPD-024) |
