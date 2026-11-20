@@ -2,6 +2,7 @@ AIPM - HELP - Shows help: rules in use, how to start, all commands and tips. Cha
 AIPM - RULES - Shows the rules file in use (name or GitHub commit, version, SHA-256) and other copies found. Changes no files.
 AIPM - PUSH - Pushes this skill, its version archive and this command list to GitHub after your yes.
 AIPM - PULL - Pulls this skill from GitHub and replaces the saved skill if the pulled version is higher.
+AIPM - COMPARE CLAUDE - Pulls Claude/AI_PROJECT_MANAGER.md and shows commands that work differently or are missing. Changes nothing.
 NEW PROJECT - Asks the Project Brief (section 5) in one message and creates PROJECT.md
 PLAN - A plan of 8 lines or fewer, acceptance checks, at most 3 questions, numbered update items
 UPDATE-LIST: <items> - Adds or changes update-list items only
