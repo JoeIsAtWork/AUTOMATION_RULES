@@ -3,7 +3,7 @@ name: ai-project-manager
 description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for LOAD RULES (even with no rules in use), UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL, SYNC, COMPARE CLAUDE or CMDS. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.12'
+  version: '1.13'
   rules-file: "UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.12
+Version: 1.13
 
 This skill holds no project rules of its own. The rules live in the user's UNIVERSAL AI PROJECT RULES file, which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -163,6 +163,10 @@ Formats follow UAPR section 2 rule 16d and `AIs/AIPM Changes TEMPLATE.md` (read 
   ```
 
   IDs are always written as `Perplexity UPD-…`, because IDs only mean something to the AI that wrote them. `Origin` is always Perplexity; a change that came from another AI keeps a `Synced from:` line so it is never synced back to its origin. Changes that only make sense here (cards, sandbox tools) are marked `Applies to: Perplexity only`.
+- **Writing changes clearly** (UAPR section 2 rule 16e, if the rules in use have it; follow it either way):
+  1. One change, one origin. A change with a `Synced from:` line holds only what came from that source. Anything added while syncing goes in a separate change of this skill's own, with no `Synced from:` line, so the other AIs can sync it.
+  2. Shared behavior is never a platform part. Anything every AI should do the same way (file names, commit messages, version-bump rules, record formats) is written as shared text in the change. `Platform parts:` lists only what really differs, such as folder names, tools and buttons.
+  3. Exact text, not descriptions. `New text:` gives the literal words to use (for example the exact commit message), never "the AI's choice".
 - **Sync record** `AI PROJECT MANAGER - Synced.txt`: one line per change read from another AI's changes file, `<AI> v<VER> Change <N> - <Result>`, optionally followed by ` (Perplexity <ID>)`. Result is `Applied`, `Already have` or `Declined`. Sorted by AI, then version compared number by number (v9 before v10, 1.9 before 1.10), then change number. LF line ends, no title or blank lines. No line means undecided.
 
 ### `AIPM - PUSH`
@@ -198,7 +202,7 @@ Reads other AIs' changes and offers them for approval. Applies nothing by itself
 4. Skip, without a sync record line: any change whose `Origin` or `Synced from` names Perplexity, and any change marked `Applies to: <another AI> only`. Skip changes with a line in the sync record (`Applied`, `Already have` or `Declined`); offer undecided ones (no line) again.
 5. For each remaining change, check this skill: if it already does the same, propose recording `Already have`. Otherwise restate it as a new update item (`UPD-<next>`) under "## NEXT CHANGES FOR APPROVAL", adapted to this skill and Perplexity Computer, naming its source (`<AI> v<VER> Change <N>`) and anything left out as platform-only. If nothing remains, say "Nothing to sync".
 6. Wait. The user approves with `APPROVE` and `BUILD` (or names the IDs), or declines items. Unanswered items get no line and are offered again next time.
-7. On `BUILD`, apply the approved items into a new skill version, add the sync record lines (`Applied (Perplexity <ID>)`, `Already have` or `Declined`), give each synced change in this version's changes file a `Synced from:` line, and push as usual. If nothing is built (only `Already have` or `Declined` lines), push `AI PROJECT MANAGER - Synced.txt` on its own, with no version bump, after one Yes/No: same checks as `AIPM - PUSH` (staged files must be only that file), commit message `AIPM - Synced (<N> Changes)` where N is the number of new lines, then read it back.
+7. On `BUILD`, apply the approved items into a new skill version (anything added beyond the synced change is its own item and its own change, rule 1 above), add the sync record lines (`Applied (Perplexity <ID>)`, `Already have` or `Declined`), give each synced change in this version's changes file a `Synced from:` line, and push as usual. If nothing is built (only `Already have` or `Declined` lines), push `AI PROJECT MANAGER - Synced.txt` on its own, with no version bump, after one Yes/No: same checks as `AIPM - PUSH` (staged files must be only that file), commit message `AIPM - Synced (<N> Changes)` where N is the number of new lines, then read it back.
 8. Never change another AI's folder, the template or the rules files.
 
 ### `AIPM - COMPARE CLAUDE`
@@ -244,3 +248,4 @@ Reply starts: `Rules: UAPR-1.4 | Mode: budget`, followed by the five status line
 | 1.10 | 2026-11-20 | Every push also writes this version's changes file `AIs/Perplexity/AI PROJECT MANAGER - Changes/Changes v<VER>.md` (agreed template, one Change per item, IDs as `Perplexity UPD-…`, `Synced from:` per change) and the sync record `AI PROJECT MANAGER - Synced.txt`; push now covers five files and never touches shared files outside `AIs/Perplexity/`. New action `AIPM - SYNC` reads the other AIs' changes files and offers every change not yet synced for approval; added to help and the command list. | 2 (UPD-022, UPD-023) |
 | 1.11 | 2026-11-20 | Synced from Claude v10 Change 1: the changes template wins over this skill's built-in format; `Synced from:` now comes right after `IDs:`; a sync that builds nothing pushes `Synced.txt` on its own after one Yes/No (message `AIPM - Synced (<N> Changes)`), with no version bump. | 1 (UPD-027) |
 | 1.12 | 2026-11-20 | `AI PROJECT MANAGER - CMDS.txt` now lists only the AIPM actions (no UAPR commands), in action-table order, and no longer needs rules in use. Also restored the indent of the `AIPM - COMPARE CLAUDE` row in the action table (lost in 1.10). | 1 (UPD-028) |
+| 1.13 | 2026-11-20 | Changes files follow three writing rules (UAPR-1.20 section 2 rule 16e): one change, one origin, so anything added while syncing is a separate change with no `Synced from:` line; shared behavior is never a platform part; `New text:` gives exact text. `AIPM - SYNC` builds additions as their own items. | 1 (UPD-029) |
