@@ -1,9 +1,9 @@
 ---
 name: ai-project-manager
-description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for LOAD RULES (even with no rules in use), UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL or COMPARE CLAUDE. Not for editing the rules file."
+description: "AI PROJECT MANAGER: runs code and hardware projects under the user's UNIVERSAL AI PROJECT RULES (UAPR) file, uploaded or loaded from GitHub. Use for LOAD RULES (even with no rules in use), UAPR commands (NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL), help, and AIPM - HELP, RULES, PUSH, PULL, COMPARE CLAUDE or CMDS. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.6'
+  version: '1.7'
   rules-file: "UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.6
+Version: 1.7
 
 This skill holds no project rules of its own. The rules live in the user's UNIVERSAL AI PROJECT RULES file, which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -72,10 +72,11 @@ Step 1 is done when the needed parts of the rules file have been read and its ve
    | Action | Also accepted | Does |
    |---|---|---|
    | `AIPM - HELP` | `help`, `APM - help`, `AI PROJECT MANAGER help`, `AI PROJECT MANAGER - help` | Shows the help below. Plain `help` counts only when step 1 found rules. Changes no files. |
-   | `AIPM - RULES` | `APM - rules` | Shows the rules in use (name or GitHub commit, version, time, SHA-256) and any other copies step 1 found. Changes no files. |
+   | `AIPM - RULES` | `APM - rules` | Shows the rules in use (name or GitHub commit, version, time, SHA-256) and any other copies step 1 found, then the UAPR commands: exactly the `SHOW CMDS` list from the rules in use (every command in its section 4 table once, with a one-line description), never from memory. Changes no files. |
    | `AIPM - PUSH` | — | Pushes this skill to GitHub (see GitHub section), after the user's yes. |
    | `AIPM - PULL` | — | Pulls this skill from GitHub and replaces the saved skill if the pulled version is higher. |
    | `AIPM - COMPARE CLAUDE` | — | Pulls Claude's copy of this skill and shows commands that work differently or are missing. Changes nothing. |
+   | `AIPM - CMDS` | — | Lists the AIPM actions only (every row of this table), one line each with a one-line description. Changes no files. |
 
 2. UAPR commands are never prefixed. `AIPM - <UAPR command>` (for example `AIPM - NEW PROJECT`) is not a command; ask whether the user meant the plain UAPR command.
 3. **Rules check before `NEW PROJECT` and `RESUME`.** Before anything else these two commands do, make sure the newest rules are loaded:
@@ -196,3 +197,4 @@ Reply starts: `Rules: UAPR-1.4 | Mode: budget`, followed by the five status line
 | 1.4 | 2026-11-19 | New read-only action `AIPM - COMPARE CLAUDE`: pulls `Claude/AI_PROJECT_MANAGER.md` and shows commands that work differently or are missing; added to help and the command list. | 1 (UPD-013) |
 | 1.5 | 2026-11-19 | `NEW PROJECT` and `RESUME` first run a rules check: `LOAD RULES` if no rules are in use, otherwise `UPDATE UAPR`. Fetches without asking when the rules in use allow it (UAPR-1.16 or later); otherwise asks one Yes/No question first. | 1 (UPD-014) |
 | 1.6 | 2026-11-19 | Rules link and fetch steps added to the skill (new Rules link section), so `LOAD RULES` works in a new chat with no rules in use; the rules check before `NEW PROJECT` and `RESUME` uses the same steps. `AIPM - PUSH` touches only its three `Perplexity/` files, never another AI's folder, the rules folder or any other file, and checks the staged files before committing. | 2 (UPD-017, UPD-018) |
+| 1.7 | 2026-11-20 | New action `AIPM - CMDS` lists the AIPM actions only; added to help and the command list. `AIPM - RULES` now also lists the UAPR commands (the `SHOW CMDS` list from the rules in use). | 2 (UPD-020, UPD-021) |
