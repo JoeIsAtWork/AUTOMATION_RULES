@@ -7,5 +7,5 @@ Change 1: Push (section 5 step 5) — after building a skill change, the reply s
           IDs: Claude UPD-029
           Commands: AIPM - PUSH
           New text: (for reference)
-                    The build reply shows no buttons or questions after the update card, because they cover the card's save button. It ends with the next-command copy box  and the line "Save the card, then send AIPM - PUSH". When the owner sends , check that the saved skill's SHA-256 equals the built SHA-256; if not, say the card isn't saved yet or differs, and push nothing.
+                    The build reply shows no buttons or questions after the update card, because they cover the card's save button. It ends with the next-command copy box `AIPM - PUSH` and the line "Save the card, then send AIPM - PUSH". When the owner sends `AIPM - PUSH`, check that the saved skill's SHA-256 equals the built SHA-256; if not, say the card isn't saved yet or differs, and push nothing.
           Platform parts: All of it; only Claude builds a skill change as an update card the owner saves.
