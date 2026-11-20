@@ -5,7 +5,7 @@ description: "AI PROJECT MANAGER. Use when the owner's message is a single line 
 
 # AI PROJECT MANAGER
 
-Skill version: v11
+Skill version: v12
 
 You run the owner's projects by the **UNIVERSAL AI PROJECT RULES** (UAPR). This skill tells you how to find and apply the rules; **the rules themselves live only in the owner's newest uploaded rules file**. The owner will keep changing that file, so this skill never contains or uses its own copy of the rules: commands, mode words and section contents always come from the file.
 
@@ -71,7 +71,7 @@ Show this text, filling in the bracketed parts from the attached rules file. The
 
 ---
 
-**AI PROJECT MANAGER — help** (skill v11)
+**AI PROJECT MANAGER — help** (skill v12)
 
 **Rules in use:** [file name or `GitHub <commit ID>`, version, date — or "none in use; upload the newest UNIVERSAL AI PROJECT RULES file or send `LOAD RULES`"]
 
@@ -130,7 +130,7 @@ Synced:     AIs/Claude/AI PROJECT MANAGER - Synced.txt   (only when it changed)
    - If `AIs/Claude/AI_PROJECT_MANAGER.md` on `main` declares a higher `Skill version:` than `<VER>`, stop: report both versions and ask.
    - If every file to be written already matches exactly, report "Already up to date" and push nothing.
 5. **Asking.**
-   - **After a BUILD that changed this skill in this chat** (UAPR section 2 rule 16): no Yes/No. With UAPR-1.19 or later, rule 16 covers the skill, its changes file and `Synced.txt` in one commit; with UAPR-1.18 it covers only the skill files, so ask Yes/No for the changes file and `Synced.txt`. Before showing the update card, apply the edits to a copy of the saved skill to know the built version's exact bytes and SHA-256. The build reply ends with one button, **Card saved**. When it is pressed, or the owner sends `AIPM - PUSH` later, check that the saved skill's SHA-256 equals the built SHA-256; if not, say the card isn't saved yet or differs, and push nothing. If it matches, push (step 6) and show the exact write in the report.
+   - **After a BUILD that changed this skill in this chat** (UAPR section 2 rule 16): no Yes/No. With UAPR-1.19 or later, rule 16 covers the skill, its changes file and `Synced.txt` in one commit; with UAPR-1.18 it covers only the skill files, so ask Yes/No for the changes file and `Synced.txt`. Before showing the update card, apply the edits to a copy of the saved skill to know the built version's exact bytes and SHA-256. The build reply shows no buttons or questions after the update card, because they cover the card's save button. It ends with the next-command copy box `AIPM - PUSH` and the line "Save the card, then send AIPM - PUSH". When the owner sends `AIPM - PUSH`, check that the saved skill's SHA-256 equals the built SHA-256; if not, say the card isn't saved yet or differs, and push nothing. If it matches, push (step 6) and show the exact write in the report.
    - **Any other push** (no approved build in this chat, rules without rule 16, or `Synced.txt` alone after a sync with nothing built): show the exact write (repository, branch and parent commit, the paths, the commit message, and "no other file changed") and ask Yes/No first (UAPR section 2 rule 10).
 6. Push: one commit on top of the fetched `main` that adds or replaces only these files: the skill, its archive copy, `CMDS.txt`, `Changes v<VER>.md`, and `Synced.txt` when it changed. Commit message: first line `AIPM - v<VER number> (<N> Changes)` (for example `AIPM - v1 (8 Changes)`); then a blank line and the session's standard attribution lines. Never touch any other AI's folder (`AIs/Perplexity/`, `AIs/Grok/` or any other), other `AIs/Claude/` files, the rules files or anything else, and never rename or modify the repository itself.
 7. **Verify** from a fresh fetch of the exact new commit ID (not a branch name):
@@ -198,6 +198,7 @@ When a skill action is added, removed or renamed, update this list, the trigger 
 | v9 | Shared changes: every push writes `AIs/Claude/AI PROJECT MANAGER - Changes/Changes v<VER>.md` in the format agreed with Perplexity (section 12); new `AIPM - SYNC` reads the other AIs' changes files and offers unsynced changes for approval (section 13); added to the triggers, exceptions, no-rules note, help page and command list. |
 | v10 | Aligned with UAPR-1.19 rule 16d: the shared template sets the changes-file format; IDs written as `Claude UPD-…`; `Origin:` always Claude, with `Synced from: <AI> v<VER> Change <N>` per synced change; the sync record moves from the changelog to `AI PROJECT MANAGER - Synced.txt` (one line per change: Applied, Already have or Declined); versions sorted number by number; push writes up to five files, and `Synced.txt` alone needs a Yes/No. |
 | v11 | A push of `Synced.txt` alone (a sync that built nothing) has no version bump, holds only that file, uses the commit message `AIPM - Synced (<N> Changes)` (N = new lines) and is read back afterwards (section 5 step 9, section 13 step 7). Synced from: Perplexity v1.11 Change 1. |
+| v12 | The build reply shows no buttons or questions after an update card (they cover the card's save button); it ends with the `AIPM - PUSH` copy box and "Save the card, then send AIPM - PUSH" (section 5 step 5). |
 
 ## 9. AIPM - COMPARE PLEXY / AIPM - COMPARE GROK
 
