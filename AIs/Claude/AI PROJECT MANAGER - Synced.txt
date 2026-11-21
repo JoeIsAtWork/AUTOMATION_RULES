@@ -2,3 +2,7 @@ Perplexity v1.11 Change 1 - Applied (Claude UPD-027)
 Perplexity v1.12 Change 1 - Already have
 Perplexity v1.13 Change 1 - Already have
 Perplexity v1.14 Change 1 - Applied (Claude UPD-030)
+Perplexity v1.15 Change 1 - Applied (Claude UPD-033)
+Perplexity v1.16 Change 1 - Applied (Claude UPD-034)
+Perplexity v1.17 Change 1 - Applied (Claude UPD-035)
+Perplexity v1.17 Change 2 - Applied (Claude UPD-036)

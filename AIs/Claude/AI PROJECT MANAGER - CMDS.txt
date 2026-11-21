@@ -7,5 +7,3 @@ AIPM - COMPARE - Compares the other AIs' skills (all, or only those named) with 
 AIPM - COMPARE PLEXY - Same as AIPM - COMPARE - Perplexity
 AIPM - COMPARE GROK - Same as AIPM - COMPARE - Grok
 AIPM - SYNC - Reads the other AIs' changes files and offers every change not yet synced for approval
-AIPM - LOAD RULES - Loads the rules from the fixed GitHub rules link, even in a new chat (plain LOAD RULES works too)
-AIPM - <rules command> - Runs any command from the rules file's command table
