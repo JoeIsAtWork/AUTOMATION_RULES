@@ -3,7 +3,7 @@ name: ai-project-manager
 description: "AI PROJECT MANAGER: runs code and hardware projects under the user's AI UNIVERSAL PROJECT RULES (AIUPR, formerly UNIVERSAL AI PROJECT RULES, UAPR) file, uploaded or loaded from GitHub. Use for AIUPR - LOAD RULES (even with no rules in use), AIUPR - commands (AIUPR - NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL, HELP), and AIPM - HELP, RULES, PUSH, PULL, SYNC, COMPARE (all AIs or named ones, e.g. COMPARE - Claude) or CMDS. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.17'
+  version: '1.18'
   rules-file: "AI UNIVERSAL PROJECT RULES, formerly UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,13 +13,13 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.17
+Version: 1.18
 
 This skill holds no project rules of its own. The rules live in the user's AI UNIVERSAL PROJECT RULES file (AIUPR; called UNIVERSAL AI PROJECT RULES, UAPR, up to UAPR-1.24), which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
 ## Step 1: find the rules in use (every activation)
 
-1. **Rules loaded from GitHub count.** If in this chat the rules were loaded from the rules link (`AIUPR - LOAD RULES`, or an approved `AI - LOAD AIUPR`), read as exact bytes in full with a computed SHA-256, that copy counts as attached (AIUPR section 2 rule 13). Treat it as a candidate alongside uploads, with source GITHUB and its commit ID.
+1. **Rules loaded from GitHub count.** If in this chat the rules were loaded from the rules link (`AIUPR - LOAD RULES`), read as exact bytes in full with a computed SHA-256, that copy counts as attached (AIUPR section 2 rule 13). Treat it as a candidate alongside uploads, with source GITHUB and its commit ID.
 2. **Find uploaded and workspace copies.** Write the finder below to `/tmp/aipm_find_rules.sh` exactly as shown and run `bash /tmp/aipm_find_rules.sh`. It lists every rules file in this session's uploads and workspace, newest first, with source (UPLOAD or WORKSPACE), time, version line, SHA-256 and path. It skips files whose first heading isn't `# AI UNIVERSAL PROJECT RULES` or the older `# UNIVERSAL AI PROJECT RULES` (reviews, comparisons and proposals that only mention the name).
 
    ```bash
@@ -257,3 +257,4 @@ Reply starts: `Rules: AIUPR-1.25 | Mode: budget`, followed by the five status li
 | 1.15 | 2026-11-20 | `UPDATE UAPR` merged into `LOAD RULES` and removed (UAPR-1.21): the rules check before `NEW PROJECT` and `RESUME` always does what `LOAD RULES` does; Rules link step 6 compares a pulled copy with the rules in use (higher version wins, old and new reported; same version same hash is already current; same version different content asks; lower is kept out), and the `PROJECT.md` version check applies only when no rules are in use; step 8 reports old and new versions. | 1 (UPD-033) |
 | 1.16 | 2026-11-20 | UAPR commands now start with `UAPR - ` (UAPR-1.24): step 2 rule 2 sets the prefix (an unprefixed or `AIPM - ` form gets a question; rules older than UAPR-1.24 keep their own names); every UAPR command mention in the skill uses the prefixed form (`UAPR - LOAD RULES`, `UAPR - NEW PROJECT`, `UAPR - RESUME` and others); plain `help` removed from `AIPM - HELP` (the `APM - help` and `AI PROJECT MANAGER help` forms stay); help adds `UAPR - HELP` when the rules table has no help row; description updated. | 1 (UPD-039) |
 | 1.17 | 2026-11-20 | Rules renamed (AIUPR-1.25): (1) the short name is AIUPR and commands start with `AIUPR - ` (step 2 rule 2; the old `UAPR - ` prefix is a near-miss under AIUPR rules, rules in use at UAPR-1.24 keep `UAPR - `, older rules keep their own names); every UAPR mention in the skill becomes AIUPR (`AIUPR - LOAD RULES`, `AIUPR - SAVE AIUPR`, `AI - LOAD AIUPR` and others), except GitHub file names, the rules link, the `UPDATE UAPR` note and references to older UAPR versions; versions compare across the rename (step 1 item 3); description and example updated. (2) The title is now AI UNIVERSAL PROJECT RULES: the finder accepts both titles and both file name styles, so AIUPR-1.25 files and older UAPR files are both found; help, description and metadata updated; the Rules link section notes that the GitHub names keep UAPR on purpose. | 2 (UPD-046, UPD-048) |
+| 1.18 | 2026-11-20 | The separate AI skill (`ai-commands`) is retired, so step 1 item 1 no longer mentions `AI - LOAD AIUPR`; rules loaded from GitHub count only through `AIUPR - LOAD RULES` (or the rules check before `AIUPR - NEW PROJECT` and `AIUPR - RESUME`). | 1 (UPD-051) |
