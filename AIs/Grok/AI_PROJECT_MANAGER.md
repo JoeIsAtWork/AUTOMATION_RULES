@@ -5,7 +5,7 @@ description: "AI PROJECT MANAGER. Use when the owner's message is a single line 
 
 # AI PROJECT MANAGER
 
-Skill version: v3
+Skill version: v4
 
 You run the owner's projects by the **UNIVERSAL AI PROJECT RULES** (UAPR). This skill tells you how to find and apply the rules; **the rules themselves live only in the owner's newest uploaded rules file**. The owner will keep changing that file, so this skill never contains or uses its own copy of the rules: commands, mode words and section contents always come from the file.
 
@@ -122,7 +122,12 @@ Synced:     AIs/Grok/AI PROJECT MANAGER - Synced.txt   (when it changed)
 
 A skill push is one commit with up to five files, all in `AIs/Grok/`: the skill, its version archive, CMDS.txt, Changes v<VER>.md, and Synced.txt when it changed. Before committing, check that no other file is staged; if anything else would change, stop and ask.
 
-1. Copy the saved skill's SKILL.md byte for byte. Read `<VER>` from its `Skill version:` line (for example `v3` gives `AI PROJECT MANAGER-v3.md`). Compute its SHA-256.
+**Authentication**
+- Prefer the environment variable `GITHUB_TOKEN` or `GH_TOKEN` (in that order). Use it as a Personal Access Token with `repo` scope.
+- Never store the token value inside this skill file, the Changes files, Synced.txt, or any file that is pushed to the public repository.
+- If neither variable is set, ask the owner to provide a token for the current session or to set the environment variable permanently.
+
+1. Copy the saved skill's SKILL.md byte for byte. Read `<VER>` from its `Skill version:` line (for example `v4` gives `AI PROJECT MANAGER-v4.md`). Compute its SHA-256.
 2. Count `<N>`: the number of changelog rows (section 8) for `<VER>`.
 3. Build `AI PROJECT MANAGER - CMDS.txt` with exactly the lines in section 7, LF line endings, ending with one newline.
 4. Ensure `Changes v<VER>.md` exists in the template format (from `AIs/AIPM Changes TEMPLATE.md`) and records the changes for this version. Ensure `Synced.txt` is current if any sync results were recorded.
@@ -173,6 +178,7 @@ When a skill action is added, removed or renamed, update this list, the trigger 
 
 | Version | Change |
 |---|---|
+| v4 | PUSH and SYNC now prefer the environment variables `GITHUB_TOKEN` or `GH_TOKEN` for authentication. The token value is never stored in the skill or any pushed file. |
 | v3 | Added `AIPM - SYNC` (reads other AIs' changes files and offers unsynced changes for approval). Updated PUSH to AIs/Grok/ paths and up to five files (skill, archive, CMDS.txt, Changes v<VER>.md, Synced.txt). Updated PULL path. Synced from: Claude v9 Change 2. |
 | v2 | Added `AIPM - cmds` to list the AIPM skill commands. Changed `AIPM - rules` to also list the UAPR commands from the rules file's command table when a rules file is in use. |
 | v1 | Initial Grok version. Based on Claude v4 structure + selected Perplexity 1.5 elements. Paths set to `Grok/`. GitHub repo fixed as `JoeIsAtWork/AUTOMATION_RULES`. Includes COMPARE CLAUDE, COMPARE PLEXY, LOAD RULES, and rules check before NEW PROJECT / RESUME. |
@@ -248,6 +254,8 @@ Reads the other AIs' changes files on GitHub and offers every change you haven't
 - Shared format: `AIs/AIPM Changes TEMPLATE.md` (if your skill and the template differ, the template wins)
 
 Never read or write another repository, branch or path. Never write in another AI's folder, the template or the rules files. If you can't read GitHub yourself, ask the owner to paste or attach the files and follow the same steps.
+
+**Authentication** (same as section 5): Prefer the environment variable `GITHUB_TOKEN` or `GH_TOKEN`. Never store the token value inside this skill or any file that is pushed to the public repository.
 
 **Sync record format** (UAPR section 2 rule 16d):
 One line per change read from another AI:

@@ -8,4 +8,3 @@ AIPM - COMPARE CLAUDE - Pulls Claude's AI PROJECT MANAGER and shows commands tha
 AIPM - COMPARE PLEXY - Pulls Perplexity's AI PROJECT MANAGER and shows commands that are missing or work differently
 AIPM - LOAD RULES - Loads the rules from the fixed GitHub rules link, even in a new chat (plain LOAD RULES works too)
 AIPM - <rules command> - Runs any command from the rules file's command table
-
