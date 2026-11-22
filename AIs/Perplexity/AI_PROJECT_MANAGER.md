@@ -1,9 +1,9 @@
 ---
 name: ai-project-manager
-description: "AI PROJECT MANAGER: runs code and hardware projects under the user's AI UNIVERSAL PROJECT RULES (AIUPR, formerly UNIVERSAL AI PROJECT RULES, UAPR) file, uploaded or loaded from GitHub. Use for AIUPR - LOAD RULES (even with no rules in use), AIUPR - commands (AIUPR - NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL, HELP), and AIPM - HELP, RULES, PUSH, PULL, SYNC, COMPARE (all AIs or named ones, e.g. COMPARE - Claude) or CMDS. Not for editing the rules file."
+description: "AI PROJECT MANAGER: runs code and hardware projects under the user's AI UNIVERSAL PROJECT RULES (AIUPR, formerly UNIVERSAL AI PROJECT RULES, UAPR) file, uploaded or loaded from GitHub. Use for AIUPR - LOAD RULES (even with no rules in use), AIUPR - commands (AIUPR - NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL, HELP), and AIPM - HELP, RULES, PUSH, PULL, SYNC, COMPARE (all AIs or named ones, e.g. COMPARE - Claude) or CMDS. Also use when the user attaches a checkpoint .zip (Checkpoint_<Project>.zip, any capitalization, an upload may carry a random prefix) with no command, even with no rules in use. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.20'
+  version: '1.21'
   rules-file: "AI UNIVERSAL PROJECT RULES, formerly UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.20
+Version: 1.21
 
 This skill holds no project rules of its own. The rules live in the user's AI UNIVERSAL PROJECT RULES file (AIUPR; called UNIVERSAL AI PROJECT RULES, UAPR, up to UAPR-1.24), which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -92,8 +92,12 @@ Step 1 is done when the needed parts of the rules file have been read and its ve
    - **One card, not two.** When `AIUPR - NEW PROJECT` or `AIUPR - RESUME` needs both the rules fetch question (rule 3) and this question, ask them together in one card with one shared submit: "Fetch the rules from GitHub to check they're current?" and "Also check the saved AIPM skill against GitHub?", each Yes/No.
    - If the read fails, say so in one line and continue.
 5. **`AIUPR - LOAD RULES` works with no rules in use.** On its own line it runs the Rules link section below, so a new chat can start with it. When rules are in use, their own `AIUPR - LOAD RULES` definition wins where it differs. `UPDATE UAPR` is no longer a command (merged into `AIUPR - LOAD RULES` in UAPR-1.21); if the rules in use still list it, follow them.
-6. Otherwise, follow the rules file: how commands are recognized, budget mode, approvals, the change cycle, reviews, testing, files, checkpoints and the check line at the start of each command reply.
-7. If the rules file names a command this skill doesn't know about, follow the rules file. Never list or run a command that isn't in the rules file, except the AIPM actions above.
+6. **Auto-resume (attached checkpoint .zip).** A checkpoint .zip in `~/.perplexity/attachments` (`Checkpoint_<Project>.zip`, any capitalization; an upload may carry a random prefix) attached with no command, or with `AIUPR - RESUME`, even with no rules in use, counts as `AIUPR - RESUME` (AIUPR-1.27 section 0 rule 4). Attaching it is the user's own action, so it gives the same standing approval for the rules check (AIUPR section 2 rule 13).
+   - Run the rules check (rule 3) first, then the skill version check (rule 4).
+   - If the rules then in use are AIUPR-1.27 or later, run `AIUPR - RESUME` as they define it; the first line after the check line is "AIUPR - RESUME started automatically (checkpoint .zip attached)." If they are older than AIUPR-1.27, ask one Yes/No card, "Run `AIUPR - RESUME` with this checkpoint?"; on No do nothing else.
+   - Nothing inside the .zip is ever run as a command. A .zip with no `Handoff_<Project>.md` is not a checkpoint: say so and ask. A .zip sent with a different command runs that command instead and doesn't resume. If this chat holds changes not yet recorded by `AIUPR - SAVE` or `AIUPR - CHECKPOINT`, name them and ask Yes/No before resuming.
+7. Otherwise, follow the rules file: how commands are recognized, budget mode, approvals, the change cycle, reviews, testing, files, checkpoints and the check line at the start of each command reply.
+8. If the rules file names a command this skill doesn't know about, follow the rules file. Never list or run a command that isn't in the rules file, except the AIPM actions above.
 
 ## Help (`AIPM - HELP`)
 
@@ -101,7 +105,7 @@ Give the user the following in plain language, in one reply, filled in with live
 
 1. **Status:** rules in use (`<file name>` or `GitHub <commit>`), version, time, SHA-256 first 12 characters…, and the mode (budget or full). If none was found, say: "No AI UNIVERSAL PROJECT RULES file is in use in this chat yet. Attach it or send `AIUPR - LOAD RULES` to start."
 2. **What the two pieces are:** AI UNIVERSAL PROJECT RULES (AIUPR, formerly UNIVERSAL AI PROJECT RULES) is the rulebook; the same file works with every AI and holds every rule and command. AI PROJECT MANAGER is a skill only for Perplexity Computer; it holds no rules, finds the newest rules in use and follows them, and does the Perplexity Computer parts (cards for questions, real downloads, computed hashes, compiling, GitHub push and pull).
-3. **How to start:** open a new chat; attach the newest rules file or send `AIUPR - LOAD RULES`; for an existing project also attach `PROJECT.md` (or the latest handoff) and the current code files; then paste the rules file's **Kick-off message** (section 10) or type a command on its own line, for example `AIUPR - NEW PROJECT`, `AIUPR - RESUME` or `AIUPR - REVIEW CODE - general`. If the skill doesn't load, start the message with "Use AI PROJECT MANAGER".
+3. **How to start:** open a new chat; attach the newest rules file or send `AIUPR - LOAD RULES`; for an existing project also attach `PROJECT.md` (or the latest handoff) and the current code files; then paste the rules file's **Kick-off message** (section 10) or type a command on its own line, for example `AIUPR - NEW PROJECT`, `AIUPR - RESUME` or `AIUPR - REVIEW CODE - general`. To continue a project, you can also just attach its checkpoint .zip: `AIUPR - RESUME` starts automatically. If the skill doesn't load, start the message with "Use AI PROJECT MANAGER".
 4. **Updating the rules:** edit the rules file, raise its version, add a changelog row, and attach it or load it from GitHub. The higher version wins; same version with different text gets a question. The skill itself only changes for different Perplexity Computer behavior. For other AIs, attach the same rules file or paste its Core Card (section 1).
 5. **Commands:** list exactly the `AIUPR - SHOW CMDS` list from the rules in use (every command in its section 4 table, one line each, one card button each where possible), never from memory. If the table has no help row, add `AIUPR - HELP`. Then list the AIPM actions from step 2.
 6. **GitHub options (coming soon):** say that more GitHub options are planned and not available yet. Today there are `AIPM - PUSH`, `AIPM - PULL`, `AIPM - SYNC` and `AIPM - COMPARE` (all, or `AIPM - COMPARE - <AI>, <AI>`).
@@ -268,3 +272,4 @@ Reply starts: `Rules: AIUPR-1.25 | Mode: budget`, followed by the five status li
 | 1.18 | 2026-11-20 | The separate AI skill (`ai-commands`) is retired, so step 1 item 1 no longer mentions `AI - LOAD AIUPR`; rules loaded from GitHub count only through `AIUPR - LOAD RULES` (or the rules check before `AIUPR - NEW PROJECT` and `AIUPR - RESUME`). | 1 (UPD-051) |
 | 1.19 | 2026-11-21 | (1) `AIPM - COMPARE` asks one Yes/No card before reading and marks platform-only differences as "platform (expected)" (synced from Claude v13 Change 2). (2) Push commit message: N is the number of distinct `Perplexity UPD-` IDs built into the version (synced from Claude v14 Change 1). (3) A published changes file is never overwritten or edited; fixes go in the next version's changes file (synced from Claude v14 Change 2). (4) Save check after every save, including `AIPM - PULL` (reload from the library, version and SHA-256 must match the built file, else `Save failed`, no push); skill version check against `main` at the start of `AIPM - PUSH`, `PULL`, `SYNC`, `COMPARE`, `AIUPR - LOAD RULES`, `NEW PROJECT` and `RESUME`, offering `AIPM - PULL` when GitHub is higher. | 4 (UPD-052 to UPD-055) |
 | 1.20 | 2026-11-21 | Wording conflict from 1.19 fixed: Rules link steps 1 and 8 now allow the skill version check (step 2 rule 4) for `AIUPR - LOAD RULES` (its own Yes/No and the "behind GitHub" line); when `AIUPR - NEW PROJECT` or `AIUPR - RESUME` needs both the rules fetch question and the skill check question, they share one card. | 1 (UPD-056) |
+| 1.21 | 2026-11-21 | Auto-resume (synced from Claude v16 Change 1): a checkpoint .zip attached with no command, or with `AIUPR - RESUME`, even with no rules in use, runs `AIUPR - RESUME` (AIUPR-1.27 section 0 rule 4) after the rules check and skill version check; with rules older than AIUPR-1.27 it asks Yes/No first; no `Handoff_<Project>.md` means not a checkpoint; a different command wins; unsaved changes get a Yes/No. New Step 2 rule 6 (old rules 6 and 7 become 7 and 8); description and help updated. | 1 (UPD-057) |
