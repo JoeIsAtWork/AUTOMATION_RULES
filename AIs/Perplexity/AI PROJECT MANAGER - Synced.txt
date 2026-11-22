@@ -1,3 +1,6 @@
 Claude v9 Change 1 - Already have (Perplexity UPD-024)
 Claude v9 Change 2 - Applied (Perplexity UPD-023)
 Claude v10 Change 1 - Applied (Perplexity UPD-027)
+Claude v13 Change 2 - Applied (Perplexity UPD-052)
+Claude v14 Change 1 - Applied (Perplexity UPD-053)
+Claude v14 Change 2 - Applied (Perplexity UPD-054)
