@@ -1,6 +1,6 @@
 # AI UNIVERSAL PROJECT RULES
 
-**Rules version:** AIUPR-1.29
+**Rules version:** AIUPR-1.30
 **Date:** November 22, 2026
 **Prepared by:** Perplexity Computer, for the owner
 **Built from:** four combined proposals: `AIs-general-project-rules-Grok.md`, `AIs-general-project-rules-ChatGpt.md` (GPR-0.2), `AIs-general-project-rules-Claude.md` (GPR-0.2) and `AIs-General-Project-Rules-Perplexity-Computer.md` (GPR-C-0.1)
@@ -48,6 +48,7 @@ If an AI limits how long its instructions can be, paste only this section and at
 15. **Stay handoff-ready:** be able to produce `AIUPR - CHECKPOINT` in one reply.
 16. **No internet without asking.** Ask first, naming the exact source and why, before any download, repository clone, package install, web search or page fetch. Files the owner attached are the only outside input.
 17. **Rules on GitHub.** The rules may also be loaded from the rules link (section 2 rule 13; `AIUPR - LOAD RULES`, which also switches to a newer version during a chat; checked automatically before `AIUPR - NEW PROJECT` and `AIUPR - RESUME`, including a resume started by an attached checkpoint .zip, rule 13g), and a rules version the owner adopts with `AIUPR - SAVE AIUPR` is published to GitHub (section 2 rule 14); a rules file the owner uploads is checked against GitHub automatically (rule 14h); the AI PROJECT MANAGER skill, with its changes file and sync record, is pushed right after the `AIUPR - BUILD` that changes it (rule 16). Nothing else on GitHub is touched without asking.
+18. **Sign every entry.** Every log entry or documented change an AI makes names that AI (section 5).
 
 ---
 
@@ -277,6 +278,7 @@ Records rules:
 - Update `PROJECT_<Project>.md` at `AIUPR - SAVE`, `AIUPR - CHECKPOINT`, a release or a pause, not after every message.
 - Never keep parallel docs. Mark any superseded doc OUTDATED with a pointer to `PROJECT_<Project>.md`. A large project may split it into `PROJECT_STATE.md`, `CHANGELOG.md`, `REVIEWS/` and `TESTS.md`; don't create empty files to fill a template.
 - History is never rewritten; corrections are added as dated amendments.
+- **Name on every entry.** Every log entry or documented change an AI makes names the AI that made it, as `<AI name> (<model>)`, for example `Claude (Opus 5.5)` or `Perplexity Computer (Claude Opus 5.5)`. This covers changelog rows, update-list, request-ledger, decision, problem, error-ledger and test-record entries, handoffs, checkpoint blocks, reviews, rules-changelog rows, AIPM changes-file entries and commit messages. Each entry names the AI, even when one AI makes several in one reply. Owner entries name the owner. Older entries without a name are left as they are (history is never rewritten).
 - Settled decisions aren't reopened without new evidence. A newly found serious risk is raised clearly.
 - Check the request ledger before saying a task is finished.
 - If two AIs disagree, `PROJECT_<Project>.md` wins, then a cited source decides, then the owner.
@@ -667,3 +669,4 @@ Project-specific rules go in a short, versioned Addendum section at the end of `
 | AIUPR-1.27 | 2026-11-21 | Drafted by Claude (Opus 5.5) for the owner. Automatic resume: when the owner attaches a checkpoint .zip with no command (or with `AIUPR - RESUME`), at the start of a chat or later, the AI runs `AIUPR - RESUME` automatically, including the GitHub rules check, and says so in the reply's first line after the check line. Attaching the .zip is the trigger; nothing inside it is run. A .zip with no handoff is not a checkpoint (the AI asks); a .zip sent with another command runs that command instead; unsaved changes in the chat get a Yes/No before resuming. Section 0 rule 4 rewritten; owner step 2, Core Card rule 17, section 2 rule 13 (standing approval) and rule 13g, the section 3 RESUME bullet (also "returns" grammar fix), the `AIUPR - RESUME` command row and the section 10 "Receiving AI" lead-in updated to match. Sections changed: top (version line), Core Card rule 17, sections 0, 2, 3, 4 and 10, and this changelog. Nothing else changed. |
 | AIUPR-1.28 | 2026-11-22 | Drafted by Claude (Opus 5.5) for the owner (UPD-023). Core Card rule 7 adds "Facts first": before stating a fact, the AI looks it up in the attached files, then, after asking (section 2 rule 12), in an authoritative source (official documentation, datasheet, source code); memory is used only when the owner says no to the lookup or the fact can't be found, tagged [M], and the reply says it is from memory and why. Sections changed: top (version line and date), Core Card rule 7, and this changelog. Nothing else changed. |
 | AIUPR-1.29 | 2026-11-22 | Drafted by Claude (Opus 5.5) for the owner (UPD-026). New section 9 rule 12, suggested chat title: no AI can rename its own chat, so the replies to `AIUPR - NEW PROJECT`, `AIUPR - RESUME` (including the automatic resume) and `AIUPR - CHECKPOINT` end with a copy box holding `<Project> v<version> (<date>)` for the owner to paste when renaming the chat. Sections changed: top (version line), section 9, and this changelog. Nothing else changed. |
+| AIUPR-1.30 | 2026-11-22 | Drafted by Perplexity Computer (Claude Opus 5.5) for the owner (UPD-028). Name on every entry: every log entry or documented change an AI makes (changelog rows, update-list, request-ledger, decision, problem, error-ledger and test-record entries, handoffs, checkpoint blocks, reviews, rules-changelog rows, AIPM changes-file entries and commit messages) names the AI as `<AI name> (<model>)`; owner entries name the owner; older entries are left as they are. New Core Card rule 18 and a new section 5 records-rules bullet. Sections changed: top (version line), Core Card, section 5, and this changelog. Nothing else changed. |
