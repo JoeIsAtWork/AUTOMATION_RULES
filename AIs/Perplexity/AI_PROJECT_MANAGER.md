@@ -3,7 +3,7 @@ name: ai-project-manager
 description: "AI PROJECT MANAGER: runs code and hardware projects under the user's AI UNIVERSAL PROJECT RULES (AIUPR, formerly UNIVERSAL AI PROJECT RULES, UAPR) file, uploaded or loaded from GitHub. Use for AIUPR - LOAD RULES (even with no rules in use), AIUPR - commands (AIUPR - NEW PROJECT, DISPLAY EDITS, CHECK UPDATED CODE, REVIEW CODE, CHECKPOINT, RESUME, FULL, HELP), and AIPM - HELP, RULES, PUSH, PULL, SYNC, COMPARE (all AIs or named ones, e.g. COMPARE - Claude) or CMDS. Not for editing the rules file."
 metadata:
   author: Perplexity Computer
-  version: '1.19'
+  version: '1.20'
   rules-file: "AI UNIVERSAL PROJECT RULES, formerly UNIVERSAL AI PROJECT RULES (any version, newest upload or GitHub load wins)"
   perplexity:
     connectors:
@@ -13,7 +13,7 @@ metadata:
 
 # AI PROJECT MANAGER
 
-Version: 1.19
+Version: 1.20
 
 This skill holds no project rules of its own. The rules live in the user's AI UNIVERSAL PROJECT RULES file (AIUPR; called UNIVERSAL AI PROJECT RULES, UAPR, up to UAPR-1.24), which the user will keep changing. Always use the newest copy in use in this chat and follow it exactly. If this skill and the rules file disagree, the rules file wins, except where platform safety rules or required confirmations apply.
 
@@ -89,6 +89,7 @@ Step 1 is done when the needed parts of the rules file have been read and its ve
    - Fetch with the steps in the Rules link section below.
 4. **Skill version check (start of `AIPM - PUSH`, `AIPM - PULL`, `AIPM - SYNC`, `AIPM - COMPARE`, `AIUPR - LOAD RULES`, `AIUPR - NEW PROJECT` and `AIUPR - RESUME`).** Before anything else the command does, compare this saved skill's `metadata.version` with that of `AIs/Perplexity/AI_PROJECT_MANAGER.md` on `main`, number by number (`gh api "repos/JoeIsAtWork/AUTOMATION_RULES/contents/AIs/Perplexity/AI_PROJECT_MANAGER.md?ref=main" --jq .content | base64 -d | grep -m1 "version:"`). If GitHub is higher, say so first in one line, `Saved skill v<X> is behind GitHub v<Y>.`, and offer `AIPM - PULL` before anything else; run nothing more until the user answers. Same or lower: say nothing and continue.
    - This read needs the user's approval (AIUPR section 2 rule 12). `AIPM - PUSH` is covered by its own fetch of `main` (and by rule 16 after `AIUPR - BUILD`); `AIPM - SYNC` and `AIPM - COMPARE` include it in their one Yes/No card; for `AIPM - PULL` the pull itself is the check. For `AIUPR - LOAD RULES`, `AIUPR - NEW PROJECT` and `AIUPR - RESUME`, the rules-link standing approval covers only the rules file, so ask one Yes/No card first, "Also check the saved AIPM skill against GitHub?", unless the rules in use give standing approval for this read. No skips the check.
+   - **One card, not two.** When `AIUPR - NEW PROJECT` or `AIUPR - RESUME` needs both the rules fetch question (rule 3) and this question, ask them together in one card with one shared submit: "Fetch the rules from GitHub to check they're current?" and "Also check the saved AIPM skill against GitHub?", each Yes/No.
    - If the read fails, say so in one line and continue.
 5. **`AIUPR - LOAD RULES` works with no rules in use.** On its own line it runs the Rules link section below, so a new chat can start with it. When rules are in use, their own `AIUPR - LOAD RULES` definition wins where it differs. `UPDATE UAPR` is no longer a command (merged into `AIUPR - LOAD RULES` in UAPR-1.21); if the rules in use still list it, follow them.
 6. Otherwise, follow the rules file: how commands are recognized, budget mode, approvals, the change cycle, reviews, testing, files, checkpoints and the check line at the start of each command reply.
@@ -114,14 +115,14 @@ Fixed source, the rules link from AIUPR section 2 rule 13. The folder, file name
 https://raw.githubusercontent.com/JoeIsAtWork/AUTOMATION_RULES/main/UNIVERSAL_AI_PROJECT_RULES/UNIVERSAL_AI_PROJECT_RULES_UAPR.md
 ```
 
-1. The user's `AIUPR - LOAD RULES` (or the rules check before `AIUPR - NEW PROJECT` and `AIUPR - RESUME` once approved) is the request for this one read; no extra Yes/No.
+1. The user's `AIUPR - LOAD RULES` (or the rules check before `AIUPR - NEW PROJECT` and `AIUPR - RESUME` once approved) is the request for this one read; no extra Yes/No (the skill version check, step 2 rule 4, keeps its own question).
 2. Pin the commit: `C=$(gh api repos/JoeIsAtWork/AUTOMATION_RULES/commits/main --jq .sha)`.
 3. Get the exact bytes at that commit: `curl -fsSL "https://raw.githubusercontent.com/JoeIsAtWork/AUTOMATION_RULES/$C/UNIVERSAL_AI_PROJECT_RULES/UNIVERSAL_AI_PROJECT_RULES_UAPR.md" -o /home/user/workspace/rules/UAPR_github_${C:0:12}.md` (create the folder first). If that fails, use `git fetch --depth 1` of `main` in a new empty folder and read the file from that commit. Never use a page reader, rendered page or summary.
 4. Confirm the read is complete: the file size equals `gh api "repos/JoeIsAtWork/AUTOMATION_RULES/contents/UNIVERSAL_AI_PROJECT_RULES/UNIVERSAL_AI_PROJECT_RULES_UAPR.md?ref=$C" --jq .size`, and the `Rules version:` line is present. Compute the SHA-256 with `sha256sum`.
 5. If exact bytes or a complete read can't be had, say so in one line and ask the user to attach the rules file; load nothing.
 6. Read the whole file. If no rules are in use yet, choose between this copy and any uploaded copy as step 1 item 3 says; if `PROJECT.md` or a handoff records a different rules version or hash, quote both version lines and ask before any other work. If rules are already in use, compare this copy with them (AIUPR section 2 rule 13f): a higher version becomes the rules in use (for `AIUPR - NEW PROJECT` and `AIUPR - RESUME`, for that command itself) and the old and new version and SHA-256 are reported; same version and same SHA-256 means already current; same version with different content gets both version lines quoted and a question; a lower version is kept out and both versions are reported.
 7. The saved copy is the GITHUB candidate (source `GitHub <C>`) for step 1 and for the hash re-check before later commands.
-8. For `AIUPR - LOAD RULES`, reply with the full check line `Rules: <version>, read from GitHub <C>, SHA-256 <hash> | Mode: <mode>` and one line confirming the version and mode (when rules were already in use, the old and new version and SHA-256, or "already current"). Do nothing else.
+8. For `AIUPR - LOAD RULES`, reply with the full check line `Rules: <version>, read from GitHub <C>, SHA-256 <hash> | Mode: <mode>` and one line confirming the version and mode (when rules were already in use, the old and new version and SHA-256, or "already current"). Do nothing else, except the skill version check (step 2 rule 4): its Yes/No card, and the line `Saved skill v<X> is behind GitHub v<Y>.` with the `AIPM - PULL` offer when GitHub is higher.
 
 ## GitHub
 
@@ -266,3 +267,4 @@ Reply starts: `Rules: AIUPR-1.25 | Mode: budget`, followed by the five status li
 | 1.17 | 2026-11-20 | Rules renamed (AIUPR-1.25): (1) the short name is AIUPR and commands start with `AIUPR - ` (step 2 rule 2; the old `UAPR - ` prefix is a near-miss under AIUPR rules, rules in use at UAPR-1.24 keep `UAPR - `, older rules keep their own names); every UAPR mention in the skill becomes AIUPR (`AIUPR - LOAD RULES`, `AIUPR - SAVE AIUPR`, `AI - LOAD AIUPR` and others), except GitHub file names, the rules link, the `UPDATE UAPR` note and references to older UAPR versions; versions compare across the rename (step 1 item 3); description and example updated. (2) The title is now AI UNIVERSAL PROJECT RULES: the finder accepts both titles and both file name styles, so AIUPR-1.25 files and older UAPR files are both found; help, description and metadata updated; the Rules link section notes that the GitHub names keep UAPR on purpose. | 2 (UPD-046, UPD-048) |
 | 1.18 | 2026-11-20 | The separate AI skill (`ai-commands`) is retired, so step 1 item 1 no longer mentions `AI - LOAD AIUPR`; rules loaded from GitHub count only through `AIUPR - LOAD RULES` (or the rules check before `AIUPR - NEW PROJECT` and `AIUPR - RESUME`). | 1 (UPD-051) |
 | 1.19 | 2026-11-21 | (1) `AIPM - COMPARE` asks one Yes/No card before reading and marks platform-only differences as "platform (expected)" (synced from Claude v13 Change 2). (2) Push commit message: N is the number of distinct `Perplexity UPD-` IDs built into the version (synced from Claude v14 Change 1). (3) A published changes file is never overwritten or edited; fixes go in the next version's changes file (synced from Claude v14 Change 2). (4) Save check after every save, including `AIPM - PULL` (reload from the library, version and SHA-256 must match the built file, else `Save failed`, no push); skill version check against `main` at the start of `AIPM - PUSH`, `PULL`, `SYNC`, `COMPARE`, `AIUPR - LOAD RULES`, `NEW PROJECT` and `RESUME`, offering `AIPM - PULL` when GitHub is higher. | 4 (UPD-052 to UPD-055) |
+| 1.20 | 2026-11-21 | Wording conflict from 1.19 fixed: Rules link steps 1 and 8 now allow the skill version check (step 2 rule 4) for `AIUPR - LOAD RULES` (its own Yes/No and the "behind GitHub" line); when `AIUPR - NEW PROJECT` or `AIUPR - RESUME` needs both the rules fetch question and the skill check question, they share one card. | 1 (UPD-056) |
