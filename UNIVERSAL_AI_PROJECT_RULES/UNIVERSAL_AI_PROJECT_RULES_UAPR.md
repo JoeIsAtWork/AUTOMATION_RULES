@@ -1,6 +1,6 @@
 # AI UNIVERSAL PROJECT RULES
 
-**Rules version:** AIUPR-1.31
+**Rules version:** AIUPR-1.32
 **Date:** November 26, 2026
 **Prepared by:** Perplexity Computer, for the owner
 **Built from:** four combined proposals: `AIs-general-project-rules-Grok.md`, `AIs-general-project-rules-ChatGpt.md` (GPR-0.2), `AIs-general-project-rules-Claude.md` (GPR-0.2) and `AIs-General-Project-Rules-Perplexity-Computer.md` (GPR-C-0.1)
@@ -310,6 +310,7 @@ A shared `BOARDS.md` of verified board facts (reserved pins, power quirks) and a
 3. Make a dated backup copy so `AIUPR - UNDO` works. Never edit the owner's upload directly; work on a copy.
 4. If a change conflicts with pins, memory, timing or an earlier owner decision, say so before applying it.
 5. Just before each edit, read the exact lines to be changed from the current file in this chat. Never write the find text from memory or from an earlier read; the file may have changed since.
+6. Name the kind of each line to be changed: active code, comment, commented-out code or inactive code (section 7 rule 13). An approved code change goes into active code unless its update item says otherwise.
 
 ### `AIUPR - DISPLAY EDITS`
 
@@ -331,7 +332,7 @@ After either choice, end with: "Save the file, attach it in the chat, then paste
 
 1. The uploaded file is the evidence; the owner saying "done" is not.
 2. Diff the upload against the last approved copy first.
-3. Report each agreed edit as applied, applied with differences, or missing; list any unexpected changes and anything that can't be verified.
+3. Report each agreed edit as applied, applied with differences, or missing; list any unexpected changes and anything that can't be verified. An edit that changed the wrong kind of line (section 7 rule 13), for example code meant for active code that landed in a comment, in commented-out code or in inactive code, counts as applied with differences.
 4. Check that the changed parts fit the rest of the file, that the header still has the tag legend, and that every unverified statement in them is tagged (section 7 rules 11 and 12).
 5. If anything needs fixing, offer a **Display edits** choice.
 
@@ -361,7 +362,7 @@ Next:           <only if the owner must decide or act>
 
 1. **File header:** the tag legend first (rule 12), then name, version, date, usage and a short history line per version.
 2. **Settings** in one config block at the top. Wiring and controls in a header comment, kept in sync with the pin constants.
-3. **One pin map** per project; check for duplicate pins and each board's reserved pins.
+3. **One pin map** per project; check for duplicate pins and each board's reserved pins. Only active code counts as using a pin (rule 13).
 4. **Layout numbers** (pixel widths, character counts, row positions) in constants, so text fit can be checked by script and mockups match the real screen.
 5. **Units** labeled everywhere; one conversion function per conversion.
 6. **Comments and docstrings** explain why, in plain words; no internal shorthand or rule IDs. The fact tags [V], [M] and [A] are allowed, because the header legend explains them (rules 11 and 12).
@@ -384,6 +385,16 @@ Next:           <only if the owner must decide or act>
     ```
 
     For example, in Arduino or C++ each line starts with `// `, and in Python with `# `. If an edited file's header doesn't have the legend, the AI adds it as part of that edit and lists it with the edits it shows (section 6); this counts as part of the approved change, not an extra one. A file that can't hold comments gets no legend (rule 11e).
+13. **Active code, comments and inactive code.** Whenever an AI reads, checks, reviews, tests or edits a source file, it sorts every line, or part of a line, into one of four kinds, following the file's own language syntax:
+    a. **Active code:** code that is compiled or run.
+    b. **Comment:** explanation text in a line comment, a block comment or a docstring.
+    c. **Commented-out code:** code inside a comment. It never runs.
+    d. **Inactive code:** code outside a comment that isn't compiled for the build settings recorded in `PROJECT_<Project>.md` (board, FQBN, defines), for example a preprocessor branch not taken (`#if 0`, an `#ifdef` whose symbol isn't defined, the `#else` of a branch that is taken).
+    e. Comment markers inside a string or character literal (for example `"//"` or `'#'`) don't start a comment. A C or C++ block comment ends at its first `*/`; block comments don't nest. A Python string literal used as a docstring is a comment.
+    f. Only active code counts as what the program does: the pin map and duplicate-pin check (rule 3), the library list (rule 9), settings, behavior statements, reviews and tests use active code only. Commented-out and inactive code that mentions a pin, setting or library is listed separately as inactive, never as in use.
+    g. When the AI can't tell which kind a line is (unusual syntax, macros, generated code, or a preprocessor branch that depends on settings not recorded), it says so, calls those lines build-dependent, and asks or tags its assumption [A] (Core Card rule 7).
+    h. An edit that comments out, uncomments, deletes commented-out code or changes which preprocessor branch is taken is a change of its own: it needs its own update item and approval (Core Card rule 4), and the AI never does it as cleanup.
+    i. Fact tags (rule 11) apply to comments. Commented-out and inactive code isn't a claim and needs no tag; a comment that disagrees with the active code is reported (section 8).
 
 ### Test levels and results (two separate fields)
 
@@ -443,12 +454,13 @@ The command being run sets the role. One AI may hold several roles, one at a tim
 5. Never present a self-written review as independent.
 6. Reviews never authorize edits. Changes need `AIUPR - UPDATE FROM REVIEWS <IDs>` or a section 4 rule 9 request naming the finding IDs.
 7. Check facts in the reviewed scope (section 7 rules 11 and 12): every outside fact has `[V] <source>` or a disclaimer tag, and every file header has the tag legend. A statement written as a fact with no source and no tag is reported as an untagged claim.
+8. Review active code for behavior (section 7 rule 13). A problem found only in commented-out or inactive code is reported as an inactive code note, never as a defect in what the program does. A comment that disagrees with the active code is a behavior or comment mismatch.
 
 ### Each finding contains
 
 - Review ID (`<AI>-<PROJECT>-v<XX>-<NNN>`) and finding ID (`F-001`, `F-002`, …), kept forever.
 - Exact files, version and SHA-256.
-- Classification: confirmed defect, behavior or comment mismatch, untagged claim (section 7 rule 11), conditional concern, documented limitation, intentional owner decision, or optional suggestion.
+- Classification: confirmed defect, behavior or comment mismatch, untagged claim (section 7 rule 11), inactive code note (section 7 rule 13), conditional concern, documented limitation, intentional owner decision, or optional suggestion.
 - Severity and confidence, kept separate. Severity is never proof.
 - File, function and line numbers, with a short excerpt.
 - Trigger or reproduction scenario, evidence and consequence.
@@ -687,3 +699,4 @@ Project-specific rules go in a short, versioned Addendum section at the end of `
 | AIUPR-1.29 | 2026-11-22 | Drafted by Claude (Opus 5.5) for the owner (UPD-026). New section 9 rule 12, suggested chat title: no AI can rename its own chat, so the replies to `AIUPR - NEW PROJECT`, `AIUPR - RESUME` (including the automatic resume) and `AIUPR - CHECKPOINT` end with a copy box holding `<Project> v<version> (<date>)` for the owner to paste when renaming the chat. Sections changed: top (version line), section 9, and this changelog. Nothing else changed. |
 | AIUPR-1.30 | 2026-11-22 | Drafted by Perplexity Computer (Claude Opus 5.5) for the owner (UPD-028). Name on every entry: every log entry or documented change an AI makes (changelog rows, update-list, request-ledger, decision, problem, error-ledger and test-record entries, handoffs, checkpoint blocks, reviews, rules-changelog rows, AIPM changes-file entries and commit messages) names the AI as `<AI name> (<model>)`; owner entries name the owner; older entries are left as they are. New Core Card rule 18 and a new section 5 records-rules bullet. Sections changed: top (version line), Core Card, section 5, and this changelog. Nothing else changed. |
 | AIUPR-1.31 | 2026-11-26 | Drafted by Claude (Opus 5.5) for the owner. Facts everywhere, no exceptions: everything an AI writes, including every comment, docstring, file header, setting, value and message it writes or changes in source code and other project files, states only checked facts; outside facts name their source as [V], and anything not verified carries a disclaimer tag, [M] from memory or [A] assumed, where it is stated. New section 7 rule 11 says how tags are written in files (source with [V], what to check with [M] or [A], tagged constants, every [M] and [A] listed in Sources with file and line, files without comments, untagged claims in lines the AI didn't write are reported, not changed). New section 7 rule 12: when the AI creates or edits a project file, the top of its header holds a fixed two-line tag legend; adding a missing legend is part of the approved edit. Core Card rule 7 rewritten; section 5 Sources row, section 6 `AIUPR - CHECK UPDATED CODE` step 4, section 7 rules 1 and 6, section 8 review rule 7 (new) and the finding classification (new "untagged claim") updated to match. Sections changed: top (version line and date), Core Card rule 7, sections 5, 6, 7 and 8, and this changelog. Nothing else changed. |
+| AIUPR-1.32 | 2026-11-26 | Drafted by Claude (Opus 5.5) for the owner. Active code, comments and inactive code: new section 7 rule 13 makes every read, check, review, test and edit of a source file sort each line, by the language's own syntax, into active code, comment (including docstrings), commented-out code or inactive code (a preprocessor branch not taken for the recorded build settings); comment markers inside strings don't count and C/C++ block comments don't nest; only active code counts as what the program does (pin map, duplicate pins, libraries, settings, reviews, tests), and inactive mentions of pins, settings or libraries are listed separately; unclear lines are called build-dependent and asked about or tagged [A]; commenting out, uncommenting, deleting commented-out code or switching a preprocessor branch is its own update item and never cleanup; commented-out code needs no fact tag. Section 6 "Before editing" new step 6 (name the kind of each changed line; code changes go into active code), section 6 `AIUPR - CHECK UPDATED CODE` step 3 (an edit in the wrong kind of line is applied with differences), section 7 rule 3 (only active code uses a pin), section 8 new review rule 8 and the new finding classification "inactive code note" updated to match. Sections changed: top (version line), sections 6, 7 and 8, and this changelog. Nothing else changed. |
