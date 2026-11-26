@@ -1,7 +1,7 @@
 # AI UNIVERSAL PROJECT RULES
 
-**Rules version:** AIUPR-1.30
-**Date:** November 22, 2026
+**Rules version:** AIUPR-1.31
+**Date:** November 26, 2026
 **Prepared by:** Perplexity Computer, for the owner
 **Built from:** four combined proposals: `AIs-general-project-rules-Grok.md`, `AIs-general-project-rules-ChatGpt.md` (GPR-0.2), `AIs-general-project-rules-Claude.md` (GPR-0.2) and `AIs-General-Project-Rules-Perplexity-Computer.md` (GPR-C-0.1)
 **Works with:** any AI (Claude, ChatGPT, Grok, Perplexity, Gemini, Copilot, local models)
@@ -37,7 +37,7 @@ If an AI limits how long its instructions can be, paste only this section and at
 4. **Do exactly what was asked.** No extra features, cleanup, redesigns or new phases. New ideas go on the update list as Proposed.
 5. **One source of truth:** this rules file, `PROJECT_<Project>.md` and the latest code files the owner attached. Never work from memory, a summary or another chat, and never save the rules to memory (section 2 rule 17). If a file is missing or can't be read in full, ask for it.
 6. **Patch, don't rewrite.** Change only what was approved. Never edit the owner's uploads; work on a copy. Keep the previous version.
-7. **Tag facts.** Pins, specs, part numbers, prices: [V] verified (with source), [M] from memory, [A] assumed. Never invent part numbers, links, hashes, dates or results; say "not found". **Facts first.** Before stating a fact (a spec, software option, setting, pin, part number or price), look it up: first in the attached files, then, after asking (section 2 rule 12), in an authoritative source (official documentation, datasheet, source code). Use memory only when the owner says no to the lookup or the fact can't be found; then tag it [M] and say in the reply that it is from memory and why.
+7. **Tag facts, everywhere.** Everything an AI writes states facts, with no exceptions: replies, records, reviews, handoffs, commit messages, and every comment, docstring, file header, setting, value and message it writes or changes in source code and other project files. A fact is something the AI checked (in the attached files, the code itself, a test it ran, or an authoritative source); an outside fact (pin, spec, part number, price, setting, library behavior) names its source as [V] verified. Anything not verified carries a disclaimer tag where it is stated: [M] from memory or [A] assumed. Never write an unverified statement as if it were a fact. Never invent part numbers, links, hashes, dates or results; say "not found". **Facts first.** Before stating a fact (a spec, software option, setting, pin, part number or price), look it up: first in the attached files, then, after asking (section 2 rule 12), in an authoritative source (official documentation, datasheet, source code). Use memory only when the owner says no to the lookup or the fact can't be found; then tag it [M] and say in the reply that it is from memory and why. In project files, section 7 rule 11 says how tags are written and rule 12 puts the tag legend at the top of every file header.
 8. **Test honestly.** Every deliverable carries a test level (L0–L5) and a result. Never say "works" without both. Electrical, timing and power claims add: "Requires measurement on the real board."
 9. **Deliver real files,** checked to exist and contain the right content. Name each file. Don't re-send unchanged files.
 10. **Ask once, up front.** Later, ask only when a wrong guess is costly, all questions together at the end of the reply. Otherwise state the assumption in one line.
@@ -268,7 +268,7 @@ The AI fills in what it can find itself, records the answers, and never assumes 
 | Error ledger | Every corrected AI claim, with the fix |
 | Pin map, wiring, settings | Hardware projects only |
 | Test record | What was tested, at what level, with what result; what wasn't |
-| Sources | Links, and claims still marked [M] or [A] |
+| Sources | Links, and claims still marked [M] or [A], with file and line for those in project files (section 7 rule 11) |
 | Changelog | Version → version, what changed and why |
 | Fix-the-rules list | Gaps in these rules found during sims or real work |
 | Addendum | Project-specific rules (section 13) |
@@ -332,7 +332,7 @@ After either choice, end with: "Save the file, attach it in the chat, then paste
 1. The uploaded file is the evidence; the owner saying "done" is not.
 2. Diff the upload against the last approved copy first.
 3. Report each agreed edit as applied, applied with differences, or missing; list any unexpected changes and anything that can't be verified.
-4. Check that the changed parts fit the rest of the file.
+4. Check that the changed parts fit the rest of the file, that the header still has the tag legend, and that every unverified statement in them is tagged (section 7 rules 11 and 12).
 5. If anything needs fixing, offer a **Display edits** choice.
 
 ### Versions
@@ -359,16 +359,31 @@ Next:           <only if the owner must decide or act>
 
 ### Code standards
 
-1. **File header:** name, version, date, usage and a short history line per version.
+1. **File header:** the tag legend first (rule 12), then name, version, date, usage and a short history line per version.
 2. **Settings** in one config block at the top. Wiring and controls in a header comment, kept in sync with the pin constants.
 3. **One pin map** per project; check for duplicate pins and each board's reserved pins.
 4. **Layout numbers** (pixel widths, character counts, row positions) in constants, so text fit can be checked by script and mockups match the real screen.
 5. **Units** labeled everywhere; one conversion function per conversion.
-6. **Comments and docstrings** explain why, in plain words; no internal shorthand or rule IDs.
+6. **Comments and docstrings** explain why, in plain words; no internal shorthand or rule IDs. The fact tags [V], [M] and [A] are allowed, because the header legend explains them (rules 11 and 12).
 7. **Structure** with more than one front end: a shared core, thin front ends, one shared settings file.
 8. **Errors** are raised in the core and shown clearly by the front ends. Faults show a clear message and stop anything risky.
 9. **Few libraries.** List every library used; never add a dependency silently.
 10. **Honest output:** report what can't be worked out instead of guessing.
+11. **Facts in code and files.** Every comment, docstring, header line, setting, constant value, log line and error message the AI writes or changes in a project file follows Core Card rule 7, with no exceptions:
+    a. A statement about the file's own code is checked against the current code just before it is written (section 6 rule 5).
+    b. An outside fact (pin, spec, limit, timing, part number, setting, wiring, library or API behavior) is looked up first (Core Card rule 7, "Facts first") and written with its source as `[V] <source>`, for example `[V] MAX31855 datasheet, p. 4`.
+    c. Anything not verified gets a disclaimer tag right where it is stated: `[M]` (from memory, not verified) or `[A]` (assumed, not verified), followed by what to check, for example `[M] max SPI clock 5 MHz; check the datasheet`. A constant or setting whose value isn't verified carries the tag in the comment on its own line.
+    d. Every [M] and [A] in a project file is also listed in the Sources section of `PROJECT_<Project>.md` with file and line, until it is verified (the tag becomes `[V] <source>`) or removed.
+    e. A file format that can't hold comments (for example JSON or CSV) gets no tags in the file; its unverified values are listed in Sources with file and key or row.
+    f. Untagged, unverified statements the AI finds in lines it didn't write are reported and added to the update list as Proposed; they are never changed without approval (Core Card rule 4).
+12. **Tag legend in every file header.** When the AI creates a project file, or edits one, the top of the file header holds the tag legend, in the file's own comment style, with exactly these two lines:
+
+    ```text
+    Fact tags: [V] verified (source named) | [M] from memory, NOT verified | [A] assumed, NOT verified
+    Anything an AI wrote without [M] or [A] is a verified fact.
+    ```
+
+    For example, in Arduino or C++ each line starts with `// `, and in Python with `# `. If an edited file's header doesn't have the legend, the AI adds it as part of that edit and lists it with the edits it shows (section 6); this counts as part of the approved change, not an extra one. A file that can't hold comments gets no legend (rule 11e).
 
 ### Test levels and results (two separate fields)
 
@@ -427,12 +442,13 @@ The command being run sets the role. One AI may hold several roles, one at a tim
 4. Review only the requested scope; report out-of-scope concerns separately. If nothing was found, say "no findings within the requested scope", never "the project is error-free".
 5. Never present a self-written review as independent.
 6. Reviews never authorize edits. Changes need `AIUPR - UPDATE FROM REVIEWS <IDs>` or a section 4 rule 9 request naming the finding IDs.
+7. Check facts in the reviewed scope (section 7 rules 11 and 12): every outside fact has `[V] <source>` or a disclaimer tag, and every file header has the tag legend. A statement written as a fact with no source and no tag is reported as an untagged claim.
 
 ### Each finding contains
 
 - Review ID (`<AI>-<PROJECT>-v<XX>-<NNN>`) and finding ID (`F-001`, `F-002`, …), kept forever.
 - Exact files, version and SHA-256.
-- Classification: confirmed defect, behavior or comment mismatch, conditional concern, documented limitation, intentional owner decision, or optional suggestion.
+- Classification: confirmed defect, behavior or comment mismatch, untagged claim (section 7 rule 11), conditional concern, documented limitation, intentional owner decision, or optional suggestion.
 - Severity and confidence, kept separate. Severity is never proof.
 - File, function and line numbers, with a short excerpt.
 - Trigger or reproduction scenario, evidence and consequence.
@@ -670,3 +686,4 @@ Project-specific rules go in a short, versioned Addendum section at the end of `
 | AIUPR-1.28 | 2026-11-22 | Drafted by Claude (Opus 5.5) for the owner (UPD-023). Core Card rule 7 adds "Facts first": before stating a fact, the AI looks it up in the attached files, then, after asking (section 2 rule 12), in an authoritative source (official documentation, datasheet, source code); memory is used only when the owner says no to the lookup or the fact can't be found, tagged [M], and the reply says it is from memory and why. Sections changed: top (version line and date), Core Card rule 7, and this changelog. Nothing else changed. |
 | AIUPR-1.29 | 2026-11-22 | Drafted by Claude (Opus 5.5) for the owner (UPD-026). New section 9 rule 12, suggested chat title: no AI can rename its own chat, so the replies to `AIUPR - NEW PROJECT`, `AIUPR - RESUME` (including the automatic resume) and `AIUPR - CHECKPOINT` end with a copy box holding `<Project> v<version> (<date>)` for the owner to paste when renaming the chat. Sections changed: top (version line), section 9, and this changelog. Nothing else changed. |
 | AIUPR-1.30 | 2026-11-22 | Drafted by Perplexity Computer (Claude Opus 5.5) for the owner (UPD-028). Name on every entry: every log entry or documented change an AI makes (changelog rows, update-list, request-ledger, decision, problem, error-ledger and test-record entries, handoffs, checkpoint blocks, reviews, rules-changelog rows, AIPM changes-file entries and commit messages) names the AI as `<AI name> (<model>)`; owner entries name the owner; older entries are left as they are. New Core Card rule 18 and a new section 5 records-rules bullet. Sections changed: top (version line), Core Card, section 5, and this changelog. Nothing else changed. |
+| AIUPR-1.31 | 2026-11-26 | Drafted by Claude (Opus 5.5) for the owner. Facts everywhere, no exceptions: everything an AI writes, including every comment, docstring, file header, setting, value and message it writes or changes in source code and other project files, states only checked facts; outside facts name their source as [V], and anything not verified carries a disclaimer tag, [M] from memory or [A] assumed, where it is stated. New section 7 rule 11 says how tags are written in files (source with [V], what to check with [M] or [A], tagged constants, every [M] and [A] listed in Sources with file and line, files without comments, untagged claims in lines the AI didn't write are reported, not changed). New section 7 rule 12: when the AI creates or edits a project file, the top of its header holds a fixed two-line tag legend; adding a missing legend is part of the approved edit. Core Card rule 7 rewritten; section 5 Sources row, section 6 `AIUPR - CHECK UPDATED CODE` step 4, section 7 rules 1 and 6, section 8 review rule 7 (new) and the finding classification (new "untagged claim") updated to match. Sections changed: top (version line and date), Core Card rule 7, sections 5, 6, 7 and 8, and this changelog. Nothing else changed. |
